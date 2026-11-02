@@ -1,0 +1,52 @@
+.gitignore
+  h_b98c004121ae66 1-13
+LICENSE
+  h_b98c004121ae66 1-21
+README.md
+  h_b98c004121ae66 1-116
+package.json
+  h_b98c004121ae66 1-15
+plugins/README.md
+  h_b98c004121ae66 1-33
+scripts/check.mjs
+  h_b98c004121ae66 1-385
+scripts/new.mjs
+  h_b98c004121ae66 1-126
+scripts/pack.mjs
+  h_b98c004121ae66 1-273
+templates/README.md
+  h_b98c004121ae66 1-21
+templates/agent-tool/README.md
+  h_b98c004121ae66 1-30
+templates/agent-tool/main.js
+  h_b98c004121ae66 1-47
+templates/agent-tool/manifest.json
+  h_b98c004121ae66 1-39
+templates/panel/README.md
+  h_b98c004121ae66 1-27
+templates/panel/main.js
+  h_b98c004121ae66 1-26
+templates/panel/manifest.json
+  h_b98c004121ae66 1-26
+templates/panel/renderer/index.html
+  h_b98c004121ae66 1-136
+templates/skill-pack/README.md
+  h_b98c004121ae66 1-37
+templates/skill-pack/main.js
+  h_b98c004121ae66 1-19
+templates/skill-pack/manifest.json
+  h_b98c004121ae66 1-16
+templates/skill-pack/skills/example-skill.md
+  h_b98c004121ae66 1-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "ab52f30defa62510b303a80189066c7f0fff8dc6",
+  "prompts": {},
+  "humans": {
+    "h_b98c004121ae66": {
+      "author": "gwbgwb <guanwenbo@jd.com>"
+    }
+  }
+}
