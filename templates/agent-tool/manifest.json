@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "local.template-agent-tool",
+  "name": "Template: Agent Tool",
+  "version": "0.1.0",
+  "description": "最小 agent 工具插件模板：注册一个工具让 agent 主动调用。复制到 plugins/ 后改 id / name / 工具名。",
+  "main": "main.js",
+  "contributes": {
+    "agentTools": [
+      {
+        "name": "template_count_words",
+        "description": "Count characters, words and lines of a text. Replace this with what your tool actually does.",
+        "risk": "low",
+        "planSafeActions": ["count"],
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": ["count"],
+              "description": "Fixed action name."
+            },
+            "text": {
+              "type": "string",
+              "description": "Text to measure."
+            }
+          },
+          "required": ["action", "text"]
+        }
+      }
+    ]
+  },
+  "permissions": ["agent.tool.register"],
+  "engines": {
+    "piDesktop": ">=0.9.0"
+  },
+  "activationEvents": ["onStartup"]
+}

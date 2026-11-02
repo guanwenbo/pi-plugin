@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="pi-plugin-chrome" content="v2" />
+    <title>Template Panel</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #181818;
+        --surface: #212121;
+        --fg: #ffffff;
+        --muted: color-mix(in oklab, #ffffff 52%, transparent);
+        --border: color-mix(in oklab, #ffffff 10%, transparent);
+        --accent: #ffffff;
+      }
+      :root[data-base="light"] {
+        color-scheme: light;
+        --bg: #ffffff;
+        --surface: #f9f9f9;
+        --fg: #1a1c1f;
+        --muted: #5d5d5d;
+        --border: color-mix(in oklab, #1a1c1f 10%, transparent);
+        --accent: #1a1c1f;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        padding: var(--pi-plugin-titlebar-height, 46px) 16px 16px;
+        overflow: auto;
+        font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      /* 顶部 46px 是宿主的透明拖拽带，正文已被自动下移，不要再加一层 padding。 */
+      .toolbar {
+        position: sticky;
+        top: var(--pi-plugin-titlebar-height, 46px);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 0 12px;
+        background: var(--bg);
+        -webkit-app-region: drag;
+      }
+      .toolbar button { -webkit-app-region: no-drag; }
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        background: var(--surface);
+      }
+      h2 { margin: 0 0 6px; font-size: 16px; font-weight: 560; letter-spacing: -0.02em; }
+      p { margin: 0 0 8px; color: var(--muted); }
+      pre {
+        margin: 8px 0 0;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg);
+        font-size: 12px;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      button {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 6px 12px;
+        background: var(--accent);
+        color: var(--bg);
+        cursor: pointer;
+        font: inherit;
+      }
+      button:hover { opacity: 0.82; }
+      button:focus-visible { outline: 2px solid color-mix(in oklab, var(--accent) 58%, transparent); outline-offset: 2px; }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <button id="toast">Toast 测试</button>
+      <button id="workspace">读取工作区</button>
+    </div>
+    <div class="card">
+      <h2>Template Panel</h2>
+      <p>面板来自本插件的 renderer 目录；宿主能力统一走 <code>window.pluginBridge</code>。</p>
+      <pre id="out">就绪。</pre>
+    </div>
+    <script>
+      const out = document.getElementById("out");
+      const log = (label, value) => {
+        out.textContent = `${label}\n${JSON.stringify(value, null, 2)}`;
+      };
+
+      // 跟随宿主外观（浅色/深色、语言）——宿主切换主题时会推事件过来。
+      const applyAppearance = (appearance) => {
+        const base = appearance?.base;
+        document.documentElement.dataset.base =
+          base === "light" || base === "dark"
+            ? base
+            : window.matchMedia("(prefers-color-scheme: light)").matches
+              ? "light"
+              : "dark";
+        if (typeof appearance?.locale === "string" && appearance.locale) {
+          document.documentElement.lang = appearance.locale;
+        }
+      };
+      window.pluginBridge?.on("appearance:changed", applyAppearance);
+      window.pluginBridge?.invoke("app.getAppearance").then(applyAppearance).catch(() => applyAppearance(null));
+
+      const bridge = (method, args) => {
+        if (!window.pluginBridge?.invoke) throw new Error("pluginBridge 不可用：面板需要在 PI-Desktop 里打开");
+        return window.pluginBridge.invoke(method, args);
+      };
+
+      document.getElementById("toast").addEventListener("click", async () => {
+        try {
+          await bridge("ui.showToast", { message: "Template Panel 的 bridge 通了" });
+          log("ui.showToast", "ok");
+        } catch (error) {
+          log("ui.showToast 失败", String(error?.message || error));
+        }
+      });
+
+      document.getElementById("workspace").addEventListener("click", async () => {
+        try {
+          log("workspace.get", await bridge("workspace.get"));
+        } catch (error) {
+          log("workspace.get 失败", String(error?.message || error));
+        }
+      });
+    </script>
+  </body>
+</html>

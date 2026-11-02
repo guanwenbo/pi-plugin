@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "local.template-skill-pack",
+  "name": "Template: Skill Pack",
+  "version": "0.1.0",
+  "description": "最小技能包模板：只贡献技能文档（Markdown + front matter），给 agent 注入领域知识，不需要运行时代码。",
+  "main": "main.js",
+  "contributes": {
+    "skills": ["skills/example-skill.md"]
+  },
+  "permissions": ["agent.prompt.inject"],
+  "engines": {
+    "piDesktop": ">=0.9.0"
+  },
+  "activationEvents": ["onStartup"]
+}

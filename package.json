@@ -1,0 +1,15 @@
+{
+  "name": "pi-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "自有的 PI-Desktop agent 插件仓库：模板、预检与打包脚本",
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "pack": "node scripts/pack.mjs",
+    "new": "node scripts/new.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

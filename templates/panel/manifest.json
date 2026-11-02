@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "local.template-panel",
+  "name": "Template: Panel",
+  "version": "0.1.0",
+  "description": "最小工作面板插件模板：命令打开一个自带窗口的前端面板，通过 window.pluginBridge 访问宿主能力。",
+  "main": "main.js",
+  "ui": {
+    "panel": "renderer/index.html",
+    "title": "Template Panel"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "id": "template-panel.open",
+        "title": "Template Panel: 打开面板",
+        "keywords": ["template-panel", "panel"]
+      }
+    ]
+  },
+  "permissions": ["ui.panel"],
+  "engines": {
+    "piDesktop": ">=0.9.0"
+  },
+  "activationEvents": ["onStartup", "onCommand:template-panel.open"]
+}
