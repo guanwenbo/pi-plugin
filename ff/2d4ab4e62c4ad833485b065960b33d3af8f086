@@ -1,0 +1,44 @@
+README.md
+  h_b98c004121ae66 111,113
+plugins/README.md
+  h_b98c004121ae66 12,62
+plugins/diagram/README.md
+  h_b98c004121ae66 1-26
+plugins/diagram/local.guanwenbo.excalidraw-studio/README.md
+  h_b98c004121ae66 1-83
+plugins/diagram/local.guanwenbo.excalidraw-studio/build.mjs
+  h_b98c004121ae66 1-85
+plugins/diagram/local.guanwenbo.excalidraw-studio/main.js
+  h_b98c004121ae66 1-26
+plugins/diagram/local.guanwenbo.excalidraw-studio/manifest.json
+  h_b98c004121ae66 1-48
+plugins/diagram/local.guanwenbo.excalidraw-studio/package-lock.json
+  h_b98c004121ae66 1-3432
+plugins/diagram/local.guanwenbo.excalidraw-studio/package.json
+  h_b98c004121ae66 1-19
+plugins/diagram/local.guanwenbo.excalidraw-studio/renderer/app.css
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.excalidraw-studio/renderer/app.js
+  h_b98c004121ae66 1-4167
+plugins/diagram/local.guanwenbo.excalidraw-studio/renderer/excalidraw.css
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.excalidraw-studio/renderer/index.html
+  h_b98c004121ae66 1-36
+plugins/diagram/local.guanwenbo.excalidraw-studio/src/panel.jsx
+  h_b98c004121ae66 1-279
+plugins/diagram/local.guanwenbo.excalidraw-studio/src/styles.css
+  h_b98c004121ae66 1-138
+plugins/diagram/local.guanwenbo.excalidraw-studio/src/templates.js
+  h_b98c004121ae66 1-365
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "ff2d4ab4e62c4ad833485b065960b33d3af8f086",
+  "prompts": {},
+  "humans": {
+    "h_b98c004121ae66": {
+      "author": "gwbgwb <guanwenbo@jd.com>"
+    }
+  }
+}
