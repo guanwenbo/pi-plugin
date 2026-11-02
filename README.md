@@ -7,7 +7,7 @@
 ```
 .
 ├── templates/          三套最小可运行模板（agent 工具 / 工作面板 / 技能包）
-├── plugins/            我的自有插件，一个子目录 = 一个插件
+├── plugins/            我的自有插件，按分类分目录：<分类>/<插件 id>/
 ├── scripts/
 │   ├── check.mjs       manifest 与打包约束预检（零依赖）
 │   ├── pack.mjs        打 store-only .piplug（零依赖，产物自检）
@@ -19,14 +19,14 @@
 ## 新建一个插件
 
 ```bash
-# 1. 从模板复制（自动改好 manifest 的 id / name）
-node scripts/new.mjs panel local.guanwenbo.my-panel --name "我的面板"
+# 1. 从模板复制到指定分类（自动改好 manifest 的 id / name）
+node scripts/new.mjs panel writing/local.guanwenbo.my-panel --name "我的面板"
 
 # 2. 改内容：manifest.json、main.js、renderer/index.html
 # 3. 预检
-node scripts/check.mjs plugins/local.guanwenbo.my-panel
+node scripts/check.mjs plugins/writing/local.guanwenbo.my-panel
 # 4. 打包
-node scripts/pack.mjs plugins/local.guanwenbo.my-panel
+node scripts/pack.mjs plugins/writing/local.guanwenbo.my-panel
 # → dist/local.guanwenbo.my-panel-0.1.0.piplug
 ```
 
@@ -34,10 +34,10 @@ node scripts/pack.mjs plugins/local.guanwenbo.my-panel
 
 | 命令 | 作用 |
 | --- | --- |
-| `node scripts/check.mjs` | 检查 `plugins/*` 与 `templates/*` 全部插件 |
+| `node scripts/check.mjs` | 检查 `plugins/**` 与 `templates/*` 全部插件（递归扫所有分类） |
 | `node scripts/check.mjs <目录>...` | 只检查指定目录；有 error 时退出码 1 |
 | `node scripts/pack.mjs <目录> [--out <目录>]` | 先校验再打包，产物默认进 `dist/` |
-| `node scripts/new.mjs <模板名> <新 id> [--name <名字>]` | 复制模板到 `plugins/<新 id>` |
+| `node scripts/new.mjs <模板名> <分类>/<插件 id> [--name <名字>]` | 复制模板到 `plugins/<分类>/<插件 id>`，不给分类落 `misc/` |
 
 也有 npm 别名：`npm run check` / `npm run pack` / `npm run new`。
 
@@ -54,7 +54,7 @@ node scripts/pack.mjs plugins/local.guanwenbo.my-panel
 
 - `id`：`[a-zA-Z0-9][a-zA-Z0-9._-]*`，个人插件统一 `local.guanwenbo.<名字>`
 - `version`：semver，产物文件名就是 `<id>-<version>.piplug`
-- 目录名建议与 `id` 一致，方便 `plugins/local.guanwenbo.my-panel`
+- 目录名与 `id` 一致，插件放在 `plugins/<分类>/<id>/`
 - 每个插件目录内必须自带 `manifest.json`，入口是 `main`
 
 ## 硬性约束
@@ -104,11 +104,13 @@ installer 会直接拒的：
 
 ## 我的插件清单
 
-| 插件 | id | 版本 | 说明 |
-| --- | --- | --- | --- |
-| _（待加）_ | | | |
+按分类维护，明细也见 [`plugins/README.md`](./plugins/README.md)。
 
-加插件时同步更新这张表和 [`plugins/README.md`](./plugins/README.md)。
+| 分类 | 插件 | id | 版本 |
+| --- | --- | --- | --- |
+| _（还没有插件）_ | | | |
+
+可用的分类：`agent/` `dev/` `writing/` `productivity/` `data/` `system/` `misc/`，各自的边界写在对应目录的 `README.md` 里。
 
 ## 参考
 

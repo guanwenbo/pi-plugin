@@ -11,11 +11,12 @@
 ## 用法
 
 ```bash
-# 方式一：复制
-cp -R templates/agent-tool plugins/local.guanwenbo.my-tool
+# 方式一：脚本复制（自动改好 manifest 的 id / name，落到指定分类）
+node scripts/new.mjs agent-tool dev/local.guanwenbo.my-tool
+node scripts/new.mjs panel productivity/local.guanwenbo.my-panel --name "我的面板"
 
-# 方式二：脚本复制（自动替换 id / name / 目录名）
-node scripts/new.mjs agent-tool local.guanwenbo.my-tool
+# 方式二：手动复制，记得自己改 id / name 并把目录放进分类里
+cp -R templates/agent-tool plugins/dev/local.guanwenbo.my-tool
 ```
 
 复制完再按各模板的 README 改内容。模板本身不要当成插件装到 PI-Desktop 里——它们的 id 是 `local.template-*`，只是起点。

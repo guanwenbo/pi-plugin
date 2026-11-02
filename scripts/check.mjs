@@ -325,19 +325,28 @@ function formatBytes(bytes) {
   return `${(bytes / 1024 / 1024).toFixed(1)}MiB`;
 }
 
-function defaultTargets() {
-  const groups = ["plugins", "templates"];
-  const targets = [];
-  for (const group of groups) {
-    const groupDir = path.join(REPO_ROOT, group);
-    if (!existsSync(groupDir)) continue;
-    for (const entry of readdirSync(groupDir, { withFileTypes: true })) {
-      if (!entry.isDirectory()) continue;
-      const dir = path.join(groupDir, entry.name);
-      if (existsSync(path.join(dir, "manifest.json"))) targets.push(dir);
+/** 递归找出「含 manifest.json 的目录」：支持 plugins/<分类>/<插件>/ 两层结构。 */
+export function findPluginDirs(root, depth = 0, acc = []) {
+  if (depth > 3 || !existsSync(root)) return acc;
+  for (const entry of readdirSync(root, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    if (SKIP_DIRS.has(entry.name)) continue;
+    const dir = path.join(root, entry.name);
+    if (existsSync(path.join(dir, "manifest.json"))) {
+      acc.push(dir);
+      continue;
     }
+    findPluginDirs(dir, depth + 1, acc);
   }
-  return targets;
+  return acc;
+}
+
+function defaultTargets() {
+  const targets = [
+    ...findPluginDirs(path.join(REPO_ROOT, "plugins")),
+    ...findPluginDirs(path.join(REPO_ROOT, "templates")),
+  ];
+  return targets.sort();
 }
 
 function main() {
@@ -345,7 +354,7 @@ function main() {
   const targets = args.length ? args.map((arg) => path.resolve(REPO_ROOT, arg)) : defaultTargets();
 
   if (!targets.length) {
-    console.log("没有找到任何插件目录（plugins/* 或 templates/* 里要有 manifest.json）。");
+    console.log("没有找到任何插件目录（plugins/<分类>/<插件>/ 或 templates/<模板>/ 里要有 manifest.json）。");
     return 0;
   }
 
