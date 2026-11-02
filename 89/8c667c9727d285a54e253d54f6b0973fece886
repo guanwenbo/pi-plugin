@@ -1,0 +1,36 @@
+README.md
+  h_b98c004121ae66 10,22-23,27,29,37,40,57,107-109,111,113
+plugins/README.md
+  h_b98c004121ae66 3,5-21,23-31,36-38,44-45,48-49,52,54-62,64
+plugins/agent/README.md
+  h_b98c004121ae66 1-18
+plugins/data/README.md
+  h_b98c004121ae66 1-20
+plugins/dev/README.md
+  h_b98c004121ae66 1-20
+plugins/misc/README.md
+  h_b98c004121ae66 1-14
+plugins/productivity/README.md
+  h_b98c004121ae66 1-20
+plugins/system/README.md
+  h_b98c004121ae66 1-21
+plugins/writing/README.md
+  h_b98c004121ae66 1-19
+scripts/check.mjs
+  h_b98c004121ae66 328-337,339,341-349,357
+scripts/new.mjs
+  h_b98c004121ae66 3,5,9-11,14,20-38,43-46,48-49,51,78-80,91-99,108-115,123-124,126,136,140-143,153,156
+templates/README.md
+  h_b98c004121ae66 14-16,18-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "898c667c9727d285a54e253d54f6b0973fece886",
+  "prompts": {},
+  "humans": {
+    "h_b98c004121ae66": {
+      "author": "gwbgwb <guanwenbo@jd.com>"
+    }
+  }
+}
