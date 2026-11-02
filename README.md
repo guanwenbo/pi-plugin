@@ -108,9 +108,9 @@ installer 会直接拒的：
 
 | 分类 | 插件 | id | 版本 |
 | --- | --- | --- | --- |
-| _（还没有插件）_ | | | |
+| `diagram/` | [Excalidraw 架构与建模画布](./plugins/diagram/local.guanwenbo.excalidraw-studio) | `local.guanwenbo.excalidraw-studio` | 0.1.0 |
 
-可用的分类：`agent/` `dev/` `writing/` `productivity/` `data/` `system/` `misc/`，各自的边界写在对应目录的 `README.md` 里。
+可用的分类：`agent/` `dev/` `writing/` `productivity/` `data/` `diagram/` `system/` `misc/`，各自的边界写在对应目录的 `README.md` 里。
 
 ## 参考
 

@@ -1,0 +1,138 @@
+/* 面板外壳：顶部 46px 是宿主的拖拽带，这边只排工具栏和画布。 */
+:root {
+  color-scheme: dark;
+  --bar-bg: #212121;
+  --bar-fg: #ffffff;
+  --bar-muted: color-mix(in oklab, #ffffff 52%, transparent);
+  --bar-border: color-mix(in oklab, #ffffff 12%, transparent);
+  --bar-accent: #ffffff;
+}
+:root[data-base="light"] {
+  color-scheme: light;
+  --bar-bg: #f9f9f9;
+  --bar-fg: #1a1c1f;
+  --bar-muted: #5d5d5d;
+  --bar-border: color-mix(in oklab, #1a1c1f 12%, transparent);
+  --bar-accent: #1a1c1f;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  background: #ffffff;
+  color: var(--bar-fg);
+}
+
+#root,
+.app {
+  height: 100%;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--pi-plugin-titlebar-height, 46px);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  overflow-x: auto;
+  background: var(--bar-bg);
+  border-bottom: 1px solid var(--bar-border);
+  -webkit-app-region: drag;
+}
+
+.toolbar > * { -webkit-app-region: no-drag; }
+
+.toolbar[data-busy="true"] { opacity: 0.75; }
+
+.group-label,
+.field {
+  color: var(--bar-muted);
+  white-space: nowrap;
+}
+
+.divider {
+  width: 1px;
+  height: 18px;
+  background: var(--bar-border);
+  margin: 0 4px;
+}
+
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toolbar button {
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  border: 1px solid var(--bar-border);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--bar-fg);
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.toolbar button:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--bar-accent) 10%, transparent);
+}
+
+.toolbar button:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.toolbar button:focus-visible,
+.toolbar input:focus-visible,
+.toolbar select:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--bar-accent) 55%, transparent);
+  outline-offset: 1px;
+}
+
+.toolbar input,
+.toolbar select {
+  padding: 4px 8px;
+  border: 1px solid var(--bar-border);
+  border-radius: 7px;
+  background: var(--bar-bg);
+  color: var(--bar-fg);
+  font: inherit;
+}
+
+.toolbar input { width: 168px; }
+.toolbar select { max-width: 220px; }
+
+.status {
+  margin-left: 6px;
+  color: var(--bar-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.canvas-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #ffffff;
+}
+
+/* Excalidraw 需要一个有尺寸的父容器 */
+.canvas-wrap .excalidraw-wrapper,
+.canvas-wrap > div {
+  position: absolute;
+  inset: 0;
+}

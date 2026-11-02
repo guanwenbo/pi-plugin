@@ -9,6 +9,7 @@ plugins/
 ├── writing/        写作与文档（稿件、PRD/TRD、Markdown）
 ├── productivity/   效率与信息管理（待办、剪贴板、快速记录）
 ├── data/           数据查看与处理（CSV/JSON/SQL、图表）
+├── diagram/        图示与结构可视化（架构图、建模图、流程图、时序图）
 ├── system/         桌面与系统集成（文件、进程、窗口、外观）
 └── misc/           未分类暂存（定型后请移走）
 ```
@@ -58,6 +59,7 @@ node scripts/pack.mjs plugins/dev/local.guanwenbo.my-dev-tool   # 单个插件
 | [`writing/`](./writing) | 稿件、PRD/TRD、Markdown | — |
 | [`productivity/`](./productivity) | 待办、剪贴板、快速记录 | — |
 | [`data/`](./data) | CSV/JSON/SQL、图表、报表 | — |
+| [`diagram/`](./diagram) | 图示：架构图、建模图、流程/时序图 | [`local.guanwenbo.excalidraw-studio`](./diagram/local.guanwenbo.excalidraw-studio) 0.1.0 |
 | [`system/`](./system) | 文件、进程、窗口、外观 | — |
 | [`misc/`](./misc) | 未分类暂存 | — |
 

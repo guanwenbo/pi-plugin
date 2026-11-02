@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="pi-plugin-chrome" content="v2" />
+    <title>Excalidraw 画布</title>
+    <link rel="stylesheet" href="./excalidraw.css" />
+    <link rel="stylesheet" href="./app.css" />
+    <script>
+      // Excalidraw 从这里取画布字体（fonts/ 已随插件打包，不联网）。
+      window.EXCALIDRAW_ASSET_PATH = "./";
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // 跟随宿主外观（浅色/深色），工具栏用自己那套 CSS 变量。
+      const applyAppearance = (appearance) => {
+        const base = appearance?.base;
+        document.documentElement.dataset.base =
+          base === "light" || base === "dark"
+            ? base
+            : window.matchMedia("(prefers-color-scheme: light)").matches
+              ? "light"
+              : "dark";
+        if (typeof appearance?.locale === "string" && appearance.locale) {
+          document.documentElement.lang = appearance.locale;
+        }
+      };
+      window.pluginBridge?.on("appearance:changed", applyAppearance);
+      window.pluginBridge?.invoke("app.getAppearance").then(applyAppearance).catch(() => applyAppearance(null));
+    </script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "local.guanwenbo.excalidraw-studio",
+  "name": "Excalidraw 架构与建模画布",
+  "version": "0.1.0",
+  "description": "在工作面板里用 Excalidraw 画技术架构图、业务建模图、流程图、时序图：四种图一键生成初稿，再手工拖改；场景可存成 .excalidraw 文件回读，也能导出 SVG 到工作区。",
+  "main": "main.js",
+  "ui": {
+    "panel": "renderer/index.html",
+    "title": "Excalidraw 画布"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "id": "excalidraw-studio.open",
+        "title": "Excalidraw: 打开画布",
+        "keywords": ["excalidraw", "diagram", "draw", "画图", "架构图", "流程图", "时序图"]
+      }
+    ]
+  },
+  "permissions": ["ui.panel", "fs.read", "fs.write"],
+  "fs": {
+    "read": {
+      "root": "workspace",
+      "scope": ["diagrams/**", "**/*.excalidraw"]
+    },
+    "write": {
+      "root": "workspace",
+      "scope": ["diagrams/**"]
+    }
+  },
+  "engines": {
+    "piDesktop": ">=0.15.0"
+  },
+  "activationEvents": ["onStartup", "onCommand:excalidraw-studio.open"],
+  "i18n": {
+    "en": {
+      "name": "Excalidraw Studio",
+      "description": "Draw technical architecture, domain-model, flowchart and sequence diagrams on an Excalidraw canvas inside the work panel. Four starters generate a first draft you can drag around; scenes save as .excalidraw files in diagrams/ and export to SVG.",
+      "safetyNotes": "Reads and writes only inside the workspace: reads diagrams/** and *.excalidraw, writes diagrams/**. No network access at runtime (fonts and the Excalidraw bundle ship with the plugin). Your drawings stay on disk in the .excalidraw JSON format, which is plain text."
+    },
+    "zh-CN": {
+      "name": "Excalidraw 架构与建模画布",
+      "description": "在工作面板里用 Excalidraw 画技术架构图、业务建模图、流程图、时序图：四种图一键生成初稿，再手工拖改；场景可存成 .excalidraw 文件回读，也能导出 SVG 到工作区。",
+      "safetyNotes": "只在工作区内读写：读 diagrams/** 与 *.excalidraw，写 diagrams/**。运行时不联网（字体与 Excalidraw 打包在本插件内）。图保存在 .excalidraw 明文 JSON 里，留在你自己的磁盘上。"
+    }
+  }
+}
