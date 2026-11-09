@@ -1,0 +1,40 @@
+.gitignore
+  h_b98c004121ae66 4-6
+README.md
+  h_b98c004121ae66 14,16-17,78-109,155-156,164-165
+latest.json
+  h_b98c004121ae66 1-20
+plugins/README.md
+  h_b98c004121ae66 62
+plugins/diagram/local.guanwenbo.archify/README.md
+  h_b98c004121ae66 46-59,61-74,76-78
+plugins/diagram/local.guanwenbo.archify/main.js
+  h_b98c004121ae66 4-6,10-13,18,20,22-23,26,89,113,138,208,214,274-437,440-447,518-535,543-550
+plugins/diagram/local.guanwenbo.archify/manifest.json
+  h_b98c004121ae66 5-6,9-40,123-127,129,133-134,138-139
+plugins/diagram/local.guanwenbo.archify/updater.js
+  h_b98c004121ae66 1-276
+plugins/diagram/local.guanwenbo.excalidraw-studio/README.md
+  h_b98c004121ae66 28-39
+plugins/diagram/local.guanwenbo.excalidraw-studio/commands.js
+  h_b98c004121ae66 1-99
+plugins/diagram/local.guanwenbo.excalidraw-studio/main.js
+  h_b98c004121ae66 5-6,9-10,17,22-24,29
+plugins/diagram/local.guanwenbo.excalidraw-studio/manifest.json
+  h_b98c004121ae66 5-6,18-27,31,42,46,50-51,55-56
+plugins/diagram/local.guanwenbo.excalidraw-studio/updater.js
+  h_b98c004121ae66 1-276
+scripts/release.mjs
+  h_b98c004121ae66 1-144
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "17bdcabc3298c199ea6990f3fe5698de01ea6017",
+  "prompts": {},
+  "humans": {
+    "h_b98c004121ae66": {
+      "author": "gwbgwb <guanwenbo@jd.com>"
+    }
+  }
+}
