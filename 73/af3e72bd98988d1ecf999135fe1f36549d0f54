@@ -1,0 +1,14 @@
+README.md
+  h_b98c004121ae66 60-74
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "73af3e72bd98988d1ecf999135fe1f36549d0f54",
+  "prompts": {},
+  "humans": {
+    "h_b98c004121ae66": {
+      "author": "gwbgwb <guanwenbo@jd.com>"
+    }
+  }
+}
