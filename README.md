@@ -11,7 +11,10 @@
 ├── scripts/
 │   ├── check.mjs       manifest 与打包约束预检（零依赖）
 │   ├── pack.mjs        打 store-only .piplug（零依赖，产物自检）
+│   ├── release.mjs     发版：产物进 releases/ 并重写 latest.json（自更新通道）
 │   └── new.mjs         从模板复制出一个新插件
+├── releases/           自更新用的 .piplug（进仓库）
+├── latest.json         更新清单（进仓库）
 ├── package.json        只有 scripts 别名，没有任何依赖
 └── LICENSE
 ```
@@ -72,6 +75,38 @@ git push origin archify-v0.1.0
 - 一个提交可以同时带多个插件的 tag（多个插件在同一提交里发版时）
 - 不打仓库级总版本号：仓库本身没有发布物，产物是每个插件各自的 `.piplug`
 
+## 自动更新与发布
+
+本地安装的插件拿不到宿主的 marketplace 更新通道（`market.applyUpdates` 只覆盖 `source=marketplace`），所以两个插件各自内置了一个 updater（`updater.js`，两份副本内容必须一致，`release.mjs` 会校验）。
+
+**更新通道 = 仓库根 `latest.json` + `releases/*.piplug`**：
+
+```json
+// latest.json
+{ "schemaVersion": 1, "generatedAt": "...",
+  "plugins": {
+    "local.guanwenbo.archify": { "version": "0.2.0", "url": "https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/releases/...piplug", "sha256": "...", "size": 5433918, "notes": "..." }
+  } }
+```
+
+插件侧行为：加载后静默拉一次清单 → 比自己新就用系统通知提示 → 命令面板执行「更新插件」→ 下载（域名受 `manifest.net.domains` 约束）→ 校验 sha256/大小 → 解 store-only zip → 备份旧文件到系统临时目录 → 覆盖自身目录 → 提示重启生效。`node_modules` / `.git` 不动；解包拒绝压缩条目、绝对路径、`..` 逃逸。
+
+**发一个新版本**：
+
+```bash
+# 1. 改插件里的 manifest.version（+ 需要的代码）
+# 2. 打包发布：产物进 releases/，同时重写 latest.json
+node scripts/release.mjs --notes "这次改了什么"
+# 3. 提交推送（updater 读的是 main 分支上的 latest.json）
+git add -A && git commit -m "release: archify 0.2.0" && git push
+# 4. 按插件打 tag
+git tag -a archify-v0.2.0 -m "..." && git push origin archify-v0.2.0
+```
+
+`releases/` 下的包必须进仓库（`.gitignore` 里对 `!releases/*.piplug` 开了例外）；`releases/` 每个插件只保留当前版本，历史版本靠 git 历史。
+
+**首次安装仍然要手动一次**：旧版本没有内置 updater，无法自我升级——用插件页装 `releases/*.piplug`，之后就都能靠命令自更新了。
+
 ## 硬性约束
 
 installer 会直接拒的：
@@ -117,7 +152,8 @@ installer 会直接拒的：
 - `scripts/pack.mjs` 对 `templates/panel` 的产物与宿主内置 `PluginPack` 的输出**字节完全一致**（sha256 `fe9224248b6f7bfa481341f7b5b05128baa60d49a9913c50a8a8f08cc3c891f5`），`unzip -t` 与 Python `zipfile` 均通过。
 - `local.guanwenbo.archify`：`runtime/bin/archify.mjs doctor` 全绿；四个工具用桩 `pi` 在本地实跑过——`finalize` 四道门禁全 pass（851280 字节 / 3.6s）、越界输出被拦、坏候选返回结构化 `diagnostics`。
 - `local.guanwenbo.excalidraw-studio` 0.2.0：四种模板与 Archify 导入在浏览器里逐张截图确认；导入用 `production-deployment.architecture.json` 实测（36 个元素：16 矩形 / 8 文本 / 12 箭头）。
-- 未验证的部分：`.piplug` 在 Plugins 页的实际安装点击流程（需要人工点一下）。
+- 自更新：`updater.js` 用本地 HTTP 服务端到端实测——查更新（有新版本/已最新/清单无此插件）、sha256 不符被拒、下载解包 198 个文件、替换（198 写入 / 1 删除 / node_modules 保留 / 备份留存）、回滚复位，全部通过。
+- 未验证的部分：`.piplug` 在 Plugins 页的实际安装点击流程（需要人工点一下）；`pi.net.fetch` 与 `pi.ui.notify` 在插件进程内的真实调用（要装上新版并能联网才跑得到）。
 
 ## 我的插件清单
 
@@ -125,8 +161,8 @@ installer 会直接拒的：
 
 | 分类 | 插件 | id | 版本 |
 | --- | --- | --- | --- |
-| `diagram/` | [Excalidraw 架构与建模画布](./plugins/diagram/local.guanwenbo.excalidraw-studio) | `local.guanwenbo.excalidraw-studio` | 0.2.0 |
-| `diagram/` | [Archify 校验式图表](./plugins/diagram/local.guanwenbo.archify) | `local.guanwenbo.archify` | 0.1.0 |
+| `diagram/` | [Excalidraw 架构与建模画布](./plugins/diagram/local.guanwenbo.excalidraw-studio) | `local.guanwenbo.excalidraw-studio` | 0.3.0 |
+| `diagram/` | [Archify 校验式图表](./plugins/diagram/local.guanwenbo.archify) | `local.guanwenbo.archify` | 0.2.0 |
 
 可用的分类：`agent/` `dev/` `writing/` `productivity/` `data/` `diagram/` `system/` `misc/`，各自的边界写在对应目录的 `README.md` 里。
 

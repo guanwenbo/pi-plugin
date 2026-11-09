@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-09T11:59:44.682Z",
+  "plugins": {
+    "local.guanwenbo.archify": {
+      "version": "0.2.0",
+      "url": "https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/releases/local.guanwenbo.archify-0.2.0.piplug",
+      "sha256": "4758d1b146a847f7f7c2e637dfc2904658a7bb8760d8d4e8479f2aa46fc233db",
+      "size": 5433918,
+      "notes": "命令面板命令 + 自更新"
+    },
+    "local.guanwenbo.excalidraw-studio": {
+      "version": "0.3.0",
+      "url": "https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/releases/local.guanwenbo.excalidraw-studio-0.3.0.piplug",
+      "sha256": "9b05f570c8fb095c8acb2ae4ead337a8fe3f2fe0d3d118895064522e79e4e4bc",
+      "size": 9205955,
+      "notes": "命令面板命令 + 自更新"
+    }
+  }
+}

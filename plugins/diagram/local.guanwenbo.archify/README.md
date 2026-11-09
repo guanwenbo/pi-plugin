@@ -43,11 +43,39 @@ LICENSE / NOTICE / THIRD_PARTY_NOTICES.md
 
 `runtime/` 是 `tt-a1i/archify@3.2.0` 仓库 `archify/` 目录的原样拷贝，只做了两处删减：`package-lock.json` 与 `examples/*.html`（渲染产物）。升级方式：整目录替换 `runtime/`，再跑 `node runtime/bin/archify.mjs doctor`。
 
+## 命令面板（6 条）
+
+所有命令都在命令面板（`Cmd+K`）或关键词里搜 `archify`：
+
+| 命令 | 做什么 |
+| --- | --- |
+| `Archify: 自检（doctor）` | 跑 CLI 的 `doctor`，Toast 报结果 |
+| `Archify: 校验最新候选 JSON` | 自动取 `diagrams/` 下 **mtime 最新**的 `*.json`，类型从 `diagram_type` 或文件名 `<name>.<type>.json` 推断，跑 validate |
+| `Archify: 用最新候选出图` | 同上，跑完整 finalize 门禁，输出到同名 `.html` |
+| `Archify: 打开最新 HTML 成品` | 找 `diagrams/` 下最新 `.html`，用宿主内置浏览器打开 |
+| `Archify: 检查更新` | 拉 `latest.json` 比对版本，Toast 结果 |
+| `Archify: 更新插件` | 下载新版 → 校验 sha256/大小 → 解包替换自身文件（先备份），提示重启 |
+
+命令没有参数输入框（宿主未提供 `ui.prompt` 一类的 API），所以「最新候选」按 mtime 自动选；要指定具体文件就用 agent 工具 `archify_validate` / `archify_finalize`。
+
+## 自动更新
+
+宿主的更新通道（`market.checkUpdates` / `market.applyUpdates`）只覆盖 `source=marketplace` 的插件，本地安装的插件拿不到，所以本插件自带 updater：
+
+- **更新源**：本仓库根 `latest.json`
+  `https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/latest.json`
+- **检查时机**：每次插件加载后静默查一次（离线/失败静默，不打扰）；有新版本用系统通知提示一次
+- **安装**：命令 `Archify: 更新插件` → 只下载清单里属于本插件的那条 `url`（域名受 `manifest.net.domains` 约束）→ 校验 `sha256` 与 `size` → 解 store-only `.piplug` → 把当前文件备份到系统临时目录 → 覆盖 → 提示**重启 PI-Desktop 生效**
+- **回滚**：备份在 `$TMPDIR/pi-archify-update/previous-<旧版本>/`；`updater.js` 暴露 `rollback(backupDir, targetDir)`
+- `node_modules` / `.git` 永不触碰；解包拒绝压缩条目、绝对路径与 `..` 逃逸
+
+发布新版本的流程在仓库根 README 的「自动更新与发布」里。
+
 ## 权限
 
-只申请两项：`agent.tool.register`（注册工具）与 `agent.prompt.inject`（技能文档）。
-
-**没有**申请 `fs.read` / `fs.write`：文件读写全部发生在插件自己的 Node 子进程里（CLI 直接读写工作区），不走宿主的 fs 网关，所以声明了也不会被用到——写了反而误导。真正的写范围由 `main.js` 里的 `assertOutputPath` 强制：输出必须以 `diagrams/` 开头且是相对路径，否则直接报错。
+- `agent.tool.register`（工具）、`agent.prompt.inject`（技能文档）、`fs.read`（`diagrams/**`，给「最新候选/成品」命令用）、`net.fetch` + `net.domains: ["raw.githubusercontent.com"]`（更新源）
+- 文件读写主体仍发生在插件自己的 Node 子进程里（CLI 直接读写工作区），`assertOutputPath` 强制输出必须在 `diagrams/` 下
+- ⚠️ `PluginCheck` 会报 `net.fetch` unused —— 因为这项检查只扫 `main.js`，而实际调用在 `updater.js` 里。不是冗余声明，别删。
 
 ## 实现要点（都是踩出来的）
 

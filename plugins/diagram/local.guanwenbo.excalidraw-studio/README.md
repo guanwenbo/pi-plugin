@@ -25,6 +25,18 @@ diagrams/<场景名>.excalidraw   Excalidraw 原生场景（明文 JSON，可用
 diagrams/<场景名>.svg          导出的矢量图
 ```
 
+## 命令面板
+
+| 命令 | 做什么 |
+| --- | --- |
+| `Excalidraw: 打开画布` | 打开画布面板 |
+| `Excalidraw 画布: 检查更新` | 拉仓库根 `latest.json` 比对版本 |
+| `Excalidraw 画布: 更新插件` | 下载新版 → 校验 sha256/大小 → 解包替换自身文件（先备份）→ 提示重启 |
+
+加载后还会静默查一次更新，有新版本用系统通知提示。更新源与 archify 插件相同：`https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/latest.json`。
+
+⚠️ `PluginCheck` 会报 `fs.read` / `fs.write` / `net.fetch` unused —— 这项检查只扫 `main.js`，而实际调用分别在**面板 bridge**（`renderer/app.js`）与 `commands.js` / `updater.js` 里。不是冗余声明，别删。
+
 ## 与 Archify 联动（0.2.0 起）
 
 配合 [`../local.guanwenbo.archify`](../local.guanwenbo.archify) 插件，两条链路都收在这一个面板里：

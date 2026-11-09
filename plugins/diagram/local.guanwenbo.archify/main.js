@@ -1,24 +1,29 @@
 /**
  * Archify 校验式图表 — 宿主侧入口。
  *
- * 把 Archify 的零依赖 CLI（runtime/bin/archify.mjs）包成 agent 工具：
- *   archify_types / archify_examples / archify_validate / archify_finalize
+ * 两部分贡献：
+ *   1. agent 工具：archify_types / archify_examples / archify_validate / archify_finalize
+ *   2. 命令面板命令：自检、校验最新候选、出图、打开最新成品、检查更新、更新插件
  *
  * 关键约束（都是实测得出的，不是猜的）：
  *   - CLI 只认 process.argv，没有导出，必须起子进程；
- *   - 插件进程里 process.execPath 指向 Electron 二进制，直接用会再开一个应用，
- *     必须带 ELECTRON_RUN_AS_NODE=1 才会以 Node 身份执行（本机实测 Node 24）；
- *   - 插件进程拿不到宿主的环境变量，PATH 可能很干净，所以要按候选列表探测；
- *   - finalize 带真实浏览器门禁，本机实测约 3.7s（含 browser-check）。
+ *   - 插件进程里 process.execPath 指向 Electron 二进制，必须带 ELECTRON_RUN_AS_NODE=1 才以 Node 身份执行；
+ *   - 插件进程拿不到宿主的环境变量，PATH 可能很干净，所以按候选列表探测；
+ *   - finalize 带真实浏览器门禁，本机实测 ~3.7s；
+ *   - 宿主的 market.applyUpdates 只覆盖 marketplace 来源的插件，本地来源的更新自己做（见 updater.js）。
  */
 
 const path = require("node:path");
 const fs = require("node:fs");
+const os = require("node:os");
 const { execFile } = require("node:child_process");
+const updater = require("./updater.js");
 
-const RUNTIME_DIR = path.join(__dirname, "runtime");
+const PLUGIN_DIR = __dirname;
+const RUNTIME_DIR = path.join(PLUGIN_DIR, "runtime");
 const BIN = path.join(RUNTIME_DIR, "bin", "archify.mjs");
 const EXAMPLES_DIR = path.join(RUNTIME_DIR, "examples");
+const OWN_MANIFEST = JSON.parse(fs.readFileSync(path.join(PLUGIN_DIR, "manifest.json"), "utf8"));
 
 const DIAGRAM_TYPES = [
   { id: "architecture", when: "组件、服务、存储、系统边界；有明确坐标（pos/size），可直接导入 Excalidraw 画布手改" },
@@ -81,7 +86,7 @@ async function resolveNode() {
   );
 }
 
-// —— 执行 —— ——————————————————————————————————————————————
+// —— 执行 ————————————————————————————————————————————————
 
 function parseJsonOutput(text) {
   const trimmed = String(text || "").trim();
@@ -105,7 +110,7 @@ async function workspaceRoot() {
     const workspace = await pi.workspace.get();
     if (workspace && workspace.path) return workspace.path;
   } catch {
-    // 没有工作区时退回进程 cwd，命令仍能跑（只是相对路径解析到别处）。
+    // 没有工作区时退回进程 cwd
   }
   return process.cwd();
 }
@@ -130,6 +135,7 @@ async function runCli(args, { timeoutMs = 100000 } = {}) {
           exitCode: error && typeof error.code === "number" ? error.code : error ? 1 : 0,
           timedOut: Boolean(error && error.killed),
           json: parseJsonOutput(stdout),
+          raw: String(stdout || "").trim(),
           stderrTail: String(stderr || "").trim().split("\n").slice(-6).join("\n") || null,
         });
       },
@@ -199,12 +205,13 @@ function assertCandidatePath(candidate) {
   return value;
 }
 
-// —— 工具实现 —— ——————————————————————————————————————————————
+// —— agent 工具实现 ————————————————————————————————————————————
 
 async function listTypes() {
   const ready = fs.existsSync(BIN);
   return {
     ok: ready,
+    version: OWN_MANIFEST.version,
     runtime: {
       dir: RUNTIME_DIR,
       bin: BIN,
@@ -264,9 +271,180 @@ async function finalizeCandidate(args) {
   return summarize(result);
 }
 
-// —— 生命周期 —— ——————————————————————————————————————————————
+// —— 命令面板 ————————————————————————————————————————————
+
+/** 在 diagrams/ 下找出最新的候选 JSON（按 mtime），给「校验/出图最新候选」用。 */
+async function findLatestCandidate() {
+  const root = await workspaceRoot();
+  let globbed;
+  try {
+    globbed = await pi.fs.glob("diagrams/**/*.json");
+  } catch (error) {
+    throw new Error(`读 diagrams/ 失败（插件需要 fs.read 权限）：${error && error.message}`);
+  }
+  const list = Array.isArray(globbed) ? globbed : (globbed && (globbed.entries ?? globbed.files)) || [];
+  const names = list
+    .map((item) => (typeof item === "string" ? item : (item.name ?? item.path ?? "")))
+    .filter((name) => name.endsWith(".json"))
+    .filter((name) => !name.endsWith("package.json"));
+  if (!names.length) throw new Error("diagrams/ 下没有候选 JSON");
+  const withTime = names.map((name) => {
+    const abs = path.isAbsolute(name) ? name : path.join(root, name);
+    let mtime = 0;
+    try {
+      mtime = fs.statSync(abs).mtimeMs;
+    } catch {
+      mtime = 0;
+    }
+    return { relative: path.isAbsolute(name) ? path.relative(root, name) : name, mtime };
+  });
+  withTime.sort((left, right) => right.mtime - left.mtime);
+  return withTime[0].relative.split(path.sep).join("/");
+}
+
+/** 从候选里判断 diagram_type（字段优先，其次文件名后缀）。 */
+async function detectType(relativePath) {
+  let doc = {};
+  try {
+    const text = await pi.fs.readText(relativePath);
+    doc = JSON.parse(text);
+  } catch {
+    doc = {};
+  }
+  if (doc && typeof doc.diagram_type === "string" && DIAGRAM_TYPES.some((t) => t.id === doc.diagram_type)) {
+    return doc.diagram_type;
+  }
+  const match = /\.([a-z]+)\.json$/i.exec(relativePath);
+  if (match && DIAGRAM_TYPES.some((t) => t.id === match[1].toLowerCase())) return match[1].toLowerCase();
+  throw new Error(
+    `无法判断图表类型：${relativePath}（文件里没有 diagram_type，文件名也不是 <name>.<type>.json）`,
+  );
+}
+
+function outputForCandidate(candidate, type) {
+  const base = candidate.replace(/\.json$/i, "");
+  const stripped = base.replace(new RegExp(`\\.${type}$`), "");
+  return `${stripped}.html`;
+}
+
+async function commandDoctor() {
+  const result = await runCli(["doctor"], { timeoutMs: 45000 });
+  const failing = result.raw
+    .split("\n")
+    .filter((line) => line.trim().startsWith("[") && !line.includes("[ok]"));
+  await pi.ui.showToast(
+    result.ok && !failing.length
+      ? `Archify 自检通过（${OWN_MANIFEST.version}）`
+      : `Archify 自检有问题：${failing.slice(0, 2).join(" / ") || result.stderrTail || "见日志"}`,
+  );
+  return { ok: result.ok && !failing.length, failing };
+}
+
+async function commandValidateLatest() {
+  const candidate = await findLatestCandidate();
+  const type = await detectType(candidate);
+  const summary = await validateCandidate({ type, candidate });
+  await pi.ui.showToast(
+    summary.ok
+      ? `校验通过：${candidate}（${type}）`
+      : `校验未通过：${candidate}，${(summary.diagnostics || []).length} 条诊断`,
+  );
+  return summary;
+}
+
+async function commandFinalizeLatest() {
+  const candidate = await findLatestCandidate();
+  const type = await detectType(candidate);
+  const output = outputForCandidate(candidate, type);
+  const summary = await finalizeCandidate({ type, candidate, output });
+  await pi.ui.showToast(
+    summary.ok
+      ? `已出图：${output}（门禁全过）`
+      : `出图失败：${(summary.diagnostics || []).map((d) => d.code).slice(0, 2).join(", ") || "见诊断"}`,
+  );
+  return summary;
+}
+
+async function commandOpenLatestHtml() {
+  const root = await workspaceRoot();
+  const globbed = await pi.fs.glob("diagrams/**/*.html");
+  const list = Array.isArray(globbed) ? globbed : (globbed && (globbed.entries ?? globbed.files)) || [];
+  const names = list
+    .map((item) => (typeof item === "string" ? item : (item.name ?? item.path ?? "")))
+    .filter((name) => name.endsWith(".html"));
+  if (!names.length) throw new Error("diagrams/ 下没有 HTML 成品");
+  const newest = names
+    .map((name) => {
+      const abs = path.isAbsolute(name) ? name : path.join(root, name);
+      let mtime = 0;
+      try {
+        mtime = fs.statSync(abs).mtimeMs;
+      } catch {
+        mtime = 0;
+      }
+      return { relative: path.isAbsolute(name) ? path.relative(root, name) : name, mtime };
+    })
+    .sort((left, right) => right.mtime - left.mtime)[0];
+  await pi.fs.openInBrowser(newest.relative.split(path.sep).join("/"));
+  await pi.ui.showToast(`已打开 ${newest.relative}`);
+  return { ok: true, path: newest.relative };
+}
+
+// —— 自更新 ————————————————————————————————————————————————
+
+const BACKUP_DIR = path.join(os.tmpdir(), "pi-archify-update");
+
+async function commandCheckUpdate() {
+  const info = await updater.checkForUpdate(OWN_MANIFEST.id, OWN_MANIFEST.version);
+  await pi.ui.showToast(
+    info.latest === null
+      ? "更新清单里没有这个插件，跳过检查"
+      : info.available
+        ? `${OWN_MANIFEST.name} 有新版本 ${info.latest}（当前 ${info.current}），运行命令「Archify: 更新插件」安装`
+        : `${OWN_MANIFEST.name} 已是最新（${info.current}）`,
+  );
+  return info;
+}
+
+async function commandApplyUpdate() {
+  const info = await updater.checkForUpdate(OWN_MANIFEST.id, OWN_MANIFEST.version);
+  if (!info.available) {
+    await pi.ui.showToast(`${OWN_MANIFEST.name} 已是最新（${info.current}）`);
+    return { ok: true, updated: false, current: info.current };
+  }
+  const stagingDir = path.join(BACKUP_DIR, `staging-${info.latest}`);
+  const staged = await updater.downloadAndStage(info.entry, stagingDir);
+  updater.applyStaged(staged.stagingDir, PLUGIN_DIR, path.join(BACKUP_DIR, `previous-${info.current}`));
+  await pi.ui.showToast(`已更新到 ${staged.version}，重启 PI-Desktop 生效`);
+  return { ok: true, updated: true, from: info.current, to: staged.version };
+}
+
+function safeBackgroundCheck() {
+  updater
+    .checkForUpdate(OWN_MANIFEST.id, OWN_MANIFEST.version)
+    .then(async (info) => {
+      if (info.available) {
+        await pi.ui.notify(
+          `${OWN_MANIFEST.name} 有新版本 ${info.latest}，命令面板执行「Archify: 更新插件」即可升级`,
+        );
+      }
+    })
+    .catch(() => {
+      // 离线或清单不可达：静默
+    });
+}
+
+// —— 生命周期 ——————————————————————————————————————————————
 
 const TOOL_NAMES = ["archify_types", "archify_examples", "archify_validate", "archify_finalize"];
+const COMMANDS = [
+  { id: "archify.doctor", title: "Archify: 自检（doctor）", keywords: ["archify", "doctor", "自检"], run: commandDoctor },
+  { id: "archify.checkUpdate", title: "Archify: 检查更新", keywords: ["archify", "update"], run: commandCheckUpdate },
+  { id: "archify.applyUpdate", title: "Archify: 更新插件", keywords: ["archify", "update", "升级"], run: commandApplyUpdate },
+  { id: "archify.validateLatest", title: "Archify: 校验最新候选 JSON", keywords: ["archify", "validate"], run: commandValidateLatest },
+  { id: "archify.finalizeLatest", title: "Archify: 用最新候选出图", keywords: ["archify", "finalize", "出图"], run: commandFinalizeLatest },
+  { id: "archify.openLatestHtml", title: "Archify: 打开最新 HTML 成品", keywords: ["archify", "open", "html"], run: commandOpenLatestHtml },
+];
 
 async function onLoad() {
   await pi.agent.registerTool({
@@ -337,6 +515,24 @@ async function onLoad() {
     },
     execute: finalizeCandidate,
   });
+
+  for (const command of COMMANDS) {
+    await pi.commands.register({
+      id: command.id,
+      title: command.title,
+      keywords: command.keywords,
+      run: async () => {
+        try {
+          return await command.run();
+        } catch (error) {
+          await pi.ui.showToast(`${command.title} 失败：${(error && error.message) || error}`);
+          return { ok: false, error: String((error && error.message) || error) };
+        }
+      },
+    });
+  }
+
+  safeBackgroundCheck();
 }
 
 async function onUnload() {
@@ -344,7 +540,14 @@ async function onUnload() {
     try {
       await pi.agent.unregisterTool(name);
     } catch {
-      // 工具没注册成功时忽略。
+      // 未注册成功时忽略
+    }
+  }
+  for (const command of COMMANDS) {
+    try {
+      await pi.commands.unregister(command.id);
+    } catch {
+      // 未注册成功时忽略
     }
   }
 }

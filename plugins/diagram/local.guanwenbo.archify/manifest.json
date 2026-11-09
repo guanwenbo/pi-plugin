@@ -2,10 +2,42 @@
   "schemaVersion": 1,
   "id": "local.guanwenbo.archify",
   "name": "Archify 校验式图表",
-  "version": "0.1.0",
-  "description": "把 Archify（Apache-2.0）的图表引擎装进 PI-Desktop：agent 写 Typed JSON IR，内置 CLI 跑 validate / deliver / 浏览器门禁，产出可分享的单个 HTML（架构、流程、时序、数据流、状态、ERD、类图、树、时间线、瀑布，共 10 类 + 一页式解释）。与 Excalidraw 画布共用 diagrams/ 目录。",
+  "version": "0.2.0",
+  "description": "把 Archify（Apache-2.0）的图表引擎装进 PI-Desktop：agent 写 Typed JSON IR，内置 CLI 跑 validate / deliver / 浏览器门禁，产出可分享的单个 HTML（架构、流程、时序、数据流、状态、ERD、类图、树、时间线、瀑布，共 10 类 + 一页式解释）。带命令面板命令与自更新。与 Excalidraw 画布共用 diagrams/ 目录。",
   "main": "main.js",
   "contributes": {
+    "commands": [
+      {
+        "id": "archify.doctor",
+        "title": "Archify: 自检（doctor）",
+        "keywords": ["archify", "doctor", "自检"]
+      },
+      {
+        "id": "archify.validateLatest",
+        "title": "Archify: 校验最新候选 JSON",
+        "keywords": ["archify", "validate", "校验"]
+      },
+      {
+        "id": "archify.finalizeLatest",
+        "title": "Archify: 用最新候选出图",
+        "keywords": ["archify", "finalize", "出图"]
+      },
+      {
+        "id": "archify.openLatestHtml",
+        "title": "Archify: 打开最新 HTML 成品",
+        "keywords": ["archify", "open", "html"]
+      },
+      {
+        "id": "archify.checkUpdate",
+        "title": "Archify: 检查更新",
+        "keywords": ["archify", "update", "更新"]
+      },
+      {
+        "id": "archify.applyUpdate",
+        "title": "Archify: 更新插件",
+        "keywords": ["archify", "update", "升级"]
+      }
+    ],
     "agentTools": [
       {
         "name": "archify_types",
@@ -88,19 +120,23 @@
     ],
     "skills": ["skills/archify.md"]
   },
-  "permissions": ["agent.tool.register", "agent.prompt.inject"],
+  "permissions": ["agent.tool.register", "agent.prompt.inject", "fs.read", "net.fetch"],
+  "fs": {
+    "read": { "root": "workspace", "scope": ["diagrams/**"] }
+  },
+  "net": { "domains": ["raw.githubusercontent.com"] },
   "engines": { "piDesktop": ">=0.15.0" },
-  "activationEvents": ["onStartup"],
+  "activationEvents": ["onStartup", "onCommand:archify.doctor", "onCommand:archify.finalizeLatest", "onCommand:archify.applyUpdate"],
   "i18n": {
     "en": {
       "name": "Archify Validated Diagrams",
-      "description": "Bundles the Apache-2.0 Archify engine: the agent authors Typed JSON IR, a zero-dependency CLI runs schema, layout, HTML and real-browser gates, and the result is one standalone interactive HTML (architecture, workflow, sequence, dataflow, lifecycle, ERD, class, tree, timeline, waterfall, plus one-page explainers). Shares diagrams/ with the Excalidraw canvas.",
-      "safetyNotes": "The bundled CLI runs as a local Node child process against the open workspace. It writes only the output path you pass, and the plugin refuses any output outside diagrams/. It uploads nothing; its update check is a bounded version lookup that never blocks delivery. Archify is Apache-2.0, vendored unmodified under runtime/ with its LICENSE and NOTICE."
+      "description": "Bundles the Apache-2.0 Archify engine: the agent authors Typed JSON IR, a zero-dependency CLI runs schema, layout, HTML and real-browser gates, and the result is one standalone interactive HTML (architecture, workflow, sequence, dataflow, lifecycle, ERD, class, tree, timeline, waterfall, plus one-page explainers). Ships command-palette commands (doctor, validate/finalize the newest candidate, open the newest HTML) and self-update from this repo's latest.json. Shares diagrams/ with the Excalidraw canvas.",
+      "safetyNotes": "The bundled CLI runs as a local Node child process against the open workspace. It writes only the output path you pass, and the plugin refuses any output outside diagrams/. Self-update downloads only the URL listed for this plugin in this repo's latest.json (host-gated to the declared net.domains), verifies sha256 and size, unpacks a store-only .piplug, backs up the current files to the OS temp dir and then replaces them; node_modules is never touched. Archify is Apache-2.0, vendored unmodified under runtime/ with its LICENSE and NOTICE."
     },
     "zh-CN": {
       "name": "Archify 校验式图表",
-      "description": "内置 Apache-2.0 的 Archify 引擎：agent 写 Typed JSON IR，零依赖 CLI 跑 Schema、布局、HTML 与真实浏览器四道门禁，产出单个可交互 HTML（架构 / 流程 / 时序 / 数据流 / 状态 / ERD / 类图 / 树 / 时间线 / 瀑布，以及一页式解释）。与 Excalidraw 画布共用 diagrams/ 目录。",
-      "safetyNotes": "内置 CLI 以本机 Node 子进程运行、作用于当前工作区。它只写你传入的那个输出路径，且插件会拒绝 diagrams/ 之外的输出。它不上传任何内容；其中的版本检查只是一次有界的版本查询，失败也不影响交付。Archify 为 Apache-2.0，runtime/ 下为未修改的原始分发，附 LICENSE 与 NOTICE。"
+      "description": "内置 Apache-2.0 的 Archify 引擎：agent 写 Typed JSON IR，零依赖 CLI 跑 Schema、布局、HTML 与真实浏览器四道门禁，产出单个可交互 HTML（架构 / 流程 / 时序 / 数据流 / 状态 / ERD / 类图 / 树 / 时间线 / 瀑布，以及一页式解释）。带命令面板命令（自检、校验/出图最新候选、打开最新成品）与从本仓库 latest.json 自更新。与 Excalidraw 画布共用 diagrams/ 目录。",
+      "safetyNotes": "内置 CLI 以本机 Node 子进程运行、作用于当前工作区，只写你传入的那个输出路径，且插件会拒绝 diagrams/ 之外的输出。自更新只下载本仓库 latest.json 里属于本插件的那条 URL（受 manifest.net.domains 约束的宿主网关），校验 sha256 与大小，解 store-only .piplug，先备份当前文件到系统临时目录再替换，不动 node_modules。Archify 为 Apache-2.0，runtime/ 下为未修改的原始分发，附 LICENSE 与 NOTICE。"
     }
   }
 }

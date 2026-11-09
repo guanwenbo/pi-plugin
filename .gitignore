@@ -1,6 +1,9 @@
 # 打包产物
 dist/
 *.piplug
+# 更新通道的发布包必须进仓库（latest.json 指向它们）
+!releases/
+!releases/*.piplug
 
 # 依赖
 node_modules/
