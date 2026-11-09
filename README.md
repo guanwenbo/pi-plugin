@@ -57,6 +57,21 @@ node scripts/pack.mjs plugins/writing/local.guanwenbo.my-panel
 - 目录名与 `id` 一致，插件放在 `plugins/<分类>/<id>/`
 - 每个插件目录内必须自带 `manifest.json`，入口是 `main`
 
+### 打 tag 的约定
+
+多插件单仓，tag 按插件打，格式 `<插件短名>-v<semver>`，与 `manifest.json` 的 `version` 一一对应：
+
+```bash
+# 某个插件发了新版本：升 manifest 版本 → 提交 → 打 tag → 推
+git tag -a archify-v0.1.0 -m "archify 0.1.0：一句话说明这次交付了什么"
+git push origin archify-v0.1.0
+```
+
+- 短名取 `id` 的最后一段（`local.guanwenbo.excalidraw-studio` → `excalidraw-studio`），去掉 `local.<作者>.` 前缀，避免 tag 太长
+- 用 annotated tag（`-a`），消息写清这次交付的能力，`git show <tag>` 能直接看懂
+- 一个提交可以同时带多个插件的 tag（多个插件在同一提交里发版时）
+- 不打仓库级总版本号：仓库本身没有发布物，产物是每个插件各自的 `.piplug`
+
 ## 硬性约束
 
 installer 会直接拒的：
