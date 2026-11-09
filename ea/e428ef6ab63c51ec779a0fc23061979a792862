@@ -1,0 +1,422 @@
+README.md
+  h_b98c004121ae66 103-104,113-114
+plugins/README.md
+  h_b98c004121ae66 62
+plugins/diagram/local.guanwenbo.archify/LICENSE
+  h_b98c004121ae66 1-202
+plugins/diagram/local.guanwenbo.archify/NOTICE
+  h_b98c004121ae66 1-26
+plugins/diagram/local.guanwenbo.archify/README.md
+  h_b98c004121ae66 1-67
+plugins/diagram/local.guanwenbo.archify/THIRD_PARTY_NOTICES.md
+  h_b98c004121ae66 1-78
+plugins/diagram/local.guanwenbo.archify/main.js
+  h_b98c004121ae66 1-352
+plugins/diagram/local.guanwenbo.archify/manifest.json
+  h_b98c004121ae66 1-106
+plugins/diagram/local.guanwenbo.archify/runtime/LICENSE
+  h_b98c004121ae66 1-202
+plugins/diagram/local.guanwenbo.archify/runtime/LICENSE-MIT
+  h_b98c004121ae66 1-22
+plugins/diagram/local.guanwenbo.archify/runtime/NOTICE
+  h_b98c004121ae66 1-26
+plugins/diagram/local.guanwenbo.archify/runtime/SKILL.md
+  h_b98c004121ae66 1-137
+plugins/diagram/local.guanwenbo.archify/runtime/THIRD_PARTY_NOTICES.md
+  h_b98c004121ae66 1-78
+plugins/diagram/local.guanwenbo.archify/runtime/assets/JetBrainsMono-OFL.txt
+  h_b98c004121ae66 1-93
+plugins/diagram/local.guanwenbo.archify/runtime/assets/template.html
+  h_b98c004121ae66 1-14768
+plugins/diagram/local.guanwenbo.archify/runtime/bin/archify.mjs
+  h_b98c004121ae66 1-7289
+plugins/diagram/local.guanwenbo.archify/runtime/bin/delivery-update.mjs
+  h_b98c004121ae66 1-92
+plugins/diagram/local.guanwenbo.archify/runtime/bin/finalize.mjs
+  h_b98c004121ae66 1-1055
+plugins/diagram/local.guanwenbo.archify/runtime/bin/open-artifact.mjs
+  h_b98c004121ae66 1-146
+plugins/diagram/local.guanwenbo.archify/runtime/bin/preview.mjs
+  h_b98c004121ae66 1-970
+plugins/diagram/local.guanwenbo.archify/runtime/bin/recover-output.mjs
+  h_b98c004121ae66 1-41
+plugins/diagram/local.guanwenbo.archify/runtime/bin/visual-check.mjs
+  h_b98c004121ae66 1-2780
+plugins/diagram/local.guanwenbo.archify/runtime/brand-marks/README.md
+  h_b98c004121ae66 1-31
+plugins/diagram/local.guanwenbo.archify/runtime/brand-marks/catalog.json
+  h_b98c004121ae66 1-131
+plugins/diagram/local.guanwenbo.archify/runtime/delta/architecture-delta.mjs
+  h_b98c004121ae66 1-1318
+plugins/diagram/local.guanwenbo.archify/runtime/examples/agent-run.lifecycle.json
+  h_b98c004121ae66 1-55
+plugins/diagram/local.guanwenbo.archify/runtime/examples/agent-tool-call.workflow.json
+  h_b98c004121ae66 1-74
+plugins/diagram/local.guanwenbo.archify/runtime/examples/archify-dev-activity.timeline.json
+  h_b98c004121ae66 1-176
+plugins/diagram/local.guanwenbo.archify/runtime/examples/archify-repository.tree.json
+  h_b98c004121ae66 1-197
+plugins/diagram/local.guanwenbo.archify/runtime/examples/async-job-roundtrip.sequence.json
+  h_b98c004121ae66 1-56
+plugins/diagram/local.guanwenbo.archify/runtime/examples/brand-aware-delivery.architecture.json
+  h_b98c004121ae66 1-34
+plugins/diagram/local.guanwenbo.archify/runtime/examples/cache-miss-request.sequence.json
+  h_b98c004121ae66 1-77
+plugins/diagram/local.guanwenbo.archify/runtime/examples/checkout-platform.base.architecture.json
+  h_b98c004121ae66 1-32
+plugins/diagram/local.guanwenbo.archify/runtime/examples/checkout-platform.head.architecture.json
+  h_b98c004121ae66 1-32
+plugins/diagram/local.guanwenbo.archify/runtime/examples/checkout-request.waterfall.json
+  h_b98c004121ae66 1-20
+plugins/diagram/local.guanwenbo.archify/runtime/examples/delivery.explainer.json
+  h_b98c004121ae66 1-155
+plugins/diagram/local.guanwenbo.archify/runtime/examples/deployment-release.lifecycle.json
+  h_b98c004121ae66 1-72
+plugins/diagram/local.guanwenbo.archify/runtime/examples/event-stream.dataflow.json
+  h_b98c004121ae66 1-52
+plugins/diagram/local.guanwenbo.archify/runtime/examples/example-rebuild.waterfall.json
+  h_b98c004121ae66 1-212
+plugins/diagram/local.guanwenbo.archify/runtime/examples/holiday-planning.workflow.json
+  h_b98c004121ae66 1-143
+plugins/diagram/local.guanwenbo.archify/runtime/examples/incident-response.workflow.json
+  h_b98c004121ae66 1-59
+plugins/diagram/local.guanwenbo.archify/runtime/examples/locales/de.json
+  h_b98c004121ae66 1-463
+plugins/diagram/local.guanwenbo.archify/runtime/examples/locales/fr.json
+  h_b98c004121ae66 1-463
+plugins/diagram/local.guanwenbo.archify/runtime/examples/locales/fr.partial.json
+  h_b98c004121ae66 1-22
+plugins/diagram/local.guanwenbo.archify/runtime/examples/locales/it.json
+  h_b98c004121ae66 1-463
+plugins/diagram/local.guanwenbo.archify/runtime/examples/locales/ja.json
+  h_b98c004121ae66 1-463
+plugins/diagram/local.guanwenbo.archify/runtime/examples/locales/pt.json
+  h_b98c004121ae66 1-463
+plugins/diagram/local.guanwenbo.archify/runtime/examples/locales/ru.json
+  h_b98c004121ae66 1-463
+plugins/diagram/local.guanwenbo.archify/runtime/examples/orders.erd.json
+  h_b98c004121ae66 1-337
+plugins/diagram/local.guanwenbo.archify/runtime/examples/payment-incident.timeline.json
+  h_b98c004121ae66 1-24
+plugins/diagram/local.guanwenbo.archify/runtime/examples/payment-platform.tree.json
+  h_b98c004121ae66 1-22
+plugins/diagram/local.guanwenbo.archify/runtime/examples/payment-processors.class.json
+  h_b98c004121ae66 1-177
+plugins/diagram/local.guanwenbo.archify/runtime/examples/payments.class.json
+  h_b98c004121ae66 1-85
+plugins/diagram/local.guanwenbo.archify/runtime/examples/product-analytics.dataflow.json
+  h_b98c004121ae66 1-71
+plugins/diagram/local.guanwenbo.archify/runtime/examples/production-deployment.architecture.json
+  h_b98c004121ae66 1-51
+plugins/diagram/local.guanwenbo.archify/runtime/examples/release-delivery.workflow.json
+  h_b98c004121ae66 1-57
+plugins/diagram/local.guanwenbo.archify/runtime/examples/subscription-billing.erd.json
+  h_b98c004121ae66 1-548
+plugins/diagram/local.guanwenbo.archify/runtime/examples/web-app.architecture.json
+  h_b98c004121ae66 1-41
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/browser-check.mjs
+  h_b98c004121ae66 1-208
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/charts.mjs
+  h_b98c004121ae66 1-70
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/check.mjs
+  h_b98c004121ae66 1-167
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/diagrams.mjs
+  h_b98c004121ae66 1-517
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/diff.mjs
+  h_b98c004121ae66 1-124
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/inline.mjs
+  h_b98c004121ae66 1-155
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/layout.mjs
+  h_b98c004121ae66 1-35
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/page-bundle.mjs
+  h_b98c004121ae66 1-16
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/parse.mjs
+  h_b98c004121ae66 1-300
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/patch.mjs
+  h_b98c004121ae66 1-117
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/prepare.mjs
+  h_b98c004121ae66 1-131
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/reader.css
+  h_b98c004121ae66 1-472
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/reader.js
+  h_b98c004121ae66 1-666
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/render.mjs
+  h_b98c004121ae66 1-224
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/revision.mjs
+  h_b98c004121ae66 1-20
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/sources.mjs
+  h_b98c004121ae66 1-318
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/validate.mjs
+  h_b98c004121ae66 1-138
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/LICENSE
+  h_b98c004121ae66 1-40
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/README.md
+  h_b98c004121ae66 1-5
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/3DKXF73K.js
+  h_b98c004121ae66 1-4
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/42UTT654.js
+  h_b98c004121ae66 1-3
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/DKTLEL5E.js
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/EEIX5ZYH.js
+  h_b98c004121ae66 1-2
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/EJ5KOXYD.js
+  h_b98c004121ae66 1-25
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/GUJTEFZK.js
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/IZOKQ2GT.js
+  h_b98c004121ae66 1-4
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/L4LY553T.js
+  h_b98c004121ae66 1-3
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/MSKIJHB2.js
+  h_b98c004121ae66 1-2
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/RVARI57O.js
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/UKSIWDDN.js
+  h_b98c004121ae66 1-2
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/UPTXNAXN.js
+  h_b98c004121ae66 1-2
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/XTDUIGUI.js
+  h_b98c004121ae66 1-9
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/chunks/YAYTP6L5.js
+  h_b98c004121ae66 1-9
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/core.js
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/diagrams/pie.js
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/diagrams/quadrantChart.js
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/diagrams/radar.js
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/diagrams/sankey.js
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/diagrams/venn.js
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/vendor/pele/diagrams/xychart.js
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.archify/runtime/explainer/writing.mjs
+  h_b98c004121ae66 1-139
+plugins/diagram/local.guanwenbo.archify/runtime/locales/README.md
+  h_b98c004121ae66 1-40
+plugins/diagram/local.guanwenbo.archify/runtime/locales/ar.json
+  h_b98c004121ae66 1-488
+plugins/diagram/local.guanwenbo.archify/runtime/locales/en.json
+  h_b98c004121ae66 1-488
+plugins/diagram/local.guanwenbo.archify/runtime/locales/es.json
+  h_b98c004121ae66 1-488
+plugins/diagram/local.guanwenbo.archify/runtime/locales/ko.json
+  h_b98c004121ae66 1-488
+plugins/diagram/local.guanwenbo.archify/runtime/locales/manifest.json
+  h_b98c004121ae66 1-10
+plugins/diagram/local.guanwenbo.archify/runtime/locales/zh-CN.json
+  h_b98c004121ae66 1-488
+plugins/diagram/local.guanwenbo.archify/runtime/locales/zh-TW.json
+  h_b98c004121ae66 1-488
+plugins/diagram/local.guanwenbo.archify/runtime/migrations/workflow-v2.mjs
+  h_b98c004121ae66 1-280
+plugins/diagram/local.guanwenbo.archify/runtime/package.json
+  h_b98c004121ae66 1-38
+plugins/diagram/local.guanwenbo.archify/runtime/recipes/scenarios.mjs
+  h_b98c004121ae66 1-455
+plugins/diagram/local.guanwenbo.archify/runtime/references/architecture-layout-repair.md
+  h_b98c004121ae66 1-18
+plugins/diagram/local.guanwenbo.archify/runtime/references/authoring-contract.md
+  h_b98c004121ae66 1-645
+plugins/diagram/local.guanwenbo.archify/runtime/references/authoring-defaults.md
+  h_b98c004121ae66 1-57
+plugins/diagram/local.guanwenbo.archify/runtime/references/brand-marks.md
+  h_b98c004121ae66 1-119
+plugins/diagram/local.guanwenbo.archify/runtime/references/delivery-contract.md
+  h_b98c004121ae66 1-665
+plugins/diagram/local.guanwenbo.archify/runtime/references/explainer-authoring.md
+  h_b98c004121ae66 1-274
+plugins/diagram/local.guanwenbo.archify/runtime/references/repository-authoring.md
+  h_b98c004121ae66 1-126
+plugins/diagram/local.guanwenbo.archify/runtime/references/update-awareness.md
+  h_b98c004121ae66 1-13
+plugins/diagram/local.guanwenbo.archify/runtime/references/viewer-runtime.md
+  h_b98c004121ae66 1-52
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/architecture/grid.mjs
+  h_b98c004121ae66 1-62
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/architecture/labels.mjs
+  h_b98c004121ae66 1-2
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/architecture/render-architecture.mjs
+  h_b98c004121ae66 1-1204
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/architecture/routing.mjs
+  h_b98c004121ae66 1-1469
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/class/README.md
+  h_b98c004121ae66 1-130
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/class/render-class.mjs
+  h_b98c004121ae66 1-1095
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/dataflow/README.md
+  h_b98c004121ae66 1-176
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/dataflow/dataflow-compiler.mjs
+  h_b98c004121ae66 1-1605
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/dataflow/joint-label-routing.mjs
+  h_b98c004121ae66 1-165
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/dataflow/label-capacity.mjs
+  h_b98c004121ae66 1-81
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/dataflow/render-dataflow.mjs
+  h_b98c004121ae66 1-23
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/erd/README.md
+  h_b98c004121ae66 1-246
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/erd/grid.mjs
+  h_b98c004121ae66 1-150
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/erd/render-erd.mjs
+  h_b98c004121ae66 1-1588
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/explainer/render-explainer.mjs
+  h_b98c004121ae66 1-42
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/lifecycle/README.md
+  h_b98c004121ae66 1-104
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/lifecycle/render-lifecycle.mjs
+  h_b98c004121ae66 1-1134
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/sequence/README.md
+  h_b98c004121ae66 1-146
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/sequence/render-sequence.mjs
+  h_b98c004121ae66 1-1105
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/atomic-output.mjs
+  h_b98c004121ae66 1-1982
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/automatic-labels.mjs
+  h_b98c004121ae66 1-290
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/brand-marks.mjs
+  h_b98c004121ae66 1-706
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/cli.mjs
+  h_b98c004121ae66 1-430
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/desktop-readability.mjs
+  h_b98c004121ae66 1-132
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/engineering-profiles.mjs
+  h_b98c004121ae66 1-157
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/generated-brand-marks.mjs
+  h_b98c004121ae66 1-2003
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/generated-validators.mjs
+  h_b98c004121ae66 1-279
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/geometry.mjs
+  h_b98c004121ae66 1-2073
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/i18n.mjs
+  h_b98c004121ae66 1-328
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/layout-report.mjs
+  h_b98c004121ae66 1-57
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/legend.mjs
+  h_b98c004121ae66 1-227
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/node-card-style.mjs
+  h_b98c004121ae66 1-32
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/output-path.mjs
+  h_b98c004121ae66 1-440
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/owned-temp-directory.mjs
+  h_b98c004121ae66 1-82
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/path-semantics.mjs
+  h_b98c004121ae66 1-1017
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/portable-path.mjs
+  h_b98c004121ae66 1-408
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/repository-evidence.mjs
+  h_b98c004121ae66 1-394
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/repository-location.mjs
+  h_b98c004121ae66 1-71
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/route-quality.mjs
+  h_b98c004121ae66 1-670
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/sidecar-path.mjs
+  h_b98c004121ae66 1-38
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/software-notices.mjs
+  h_b98c004121ae66 1-6
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/spatial-grid.mjs
+  h_b98c004121ae66 1-66
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/svg-path-analysis.mjs
+  h_b98c004121ae66 1-135
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/text-fit.mjs
+  h_b98c004121ae66 1-105
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/utils.mjs
+  h_b98c004121ae66 1-260
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/shared/validator.mjs
+  h_b98c004121ae66 1-83
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/timeline/README.md
+  h_b98c004121ae66 1-76
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/timeline/render-timeline.mjs
+  h_b98c004121ae66 1-576
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/tree/README.md
+  h_b98c004121ae66 1-96
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/tree/render-tree.mjs
+  h_b98c004121ae66 1-573
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/waterfall/README.md
+  h_b98c004121ae66 1-73
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/waterfall/render-waterfall.mjs
+  h_b98c004121ae66 1-413
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/workflow/README.md
+  h_b98c004121ae66 1-337
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/workflow/render-workflow.mjs
+  h_b98c004121ae66 1-47
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/workflow/workflow-compiler.mjs
+  h_b98c004121ae66 1-5920
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/workflow/workflow-migration-geometry.mjs
+  h_b98c004121ae66 1-161
+plugins/diagram/local.guanwenbo.archify/runtime/renderers/workflow/workflow-placement-repair.mjs
+  h_b98c004121ae66 1-94
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/README.md
+  h_b98c004121ae66 1-258
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/architecture.schema.json
+  h_b98c004121ae66 1-152
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/class.schema.json
+  h_b98c004121ae66 1-345
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/common.schema.json
+  h_b98c004121ae66 1-181
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/dataflow.schema.json
+  h_b98c004121ae66 1-254
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/erd.schema.json
+  h_b98c004121ae66 1-381
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/explainer.schema.json
+  h_b98c004121ae66 1-927
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/lifecycle.schema.json
+  h_b98c004121ae66 1-179
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/sequence.schema.json
+  h_b98c004121ae66 1-234
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/timeline.schema.json
+  h_b98c004121ae66 1-160
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/tree.schema.json
+  h_b98c004121ae66 1-141
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/waterfall.schema.json
+  h_b98c004121ae66 1-147
+plugins/diagram/local.guanwenbo.archify/runtime/schemas/workflow.schema.json
+  h_b98c004121ae66 1-439
+plugins/diagram/local.guanwenbo.archify/runtime/scripts/check-render-output.mjs
+  h_b98c004121ae66 1-1469
+plugins/diagram/local.guanwenbo.archify/runtime/scripts/check-update.mjs
+  h_b98c004121ae66 1-1717
+plugins/diagram/local.guanwenbo.archify/runtime/scripts/delivery-update-child.mjs
+  h_b98c004121ae66 1-26
+plugins/diagram/local.guanwenbo.archify/runtime/scripts/generate-brand-marks.mjs
+  h_b98c004121ae66 1-141
+plugins/diagram/local.guanwenbo.archify/runtime/scripts/generate-validators.mjs
+  h_b98c004121ae66 1-105
+plugins/diagram/local.guanwenbo.archify/runtime/scripts/render-examples.mjs
+  h_b98c004121ae66 1-36
+plugins/diagram/local.guanwenbo.archify/runtime/scripts/update-contract.mjs
+  h_b98c004121ae66 1-187
+plugins/diagram/local.guanwenbo.archify/runtime/skill-release.json
+  h_b98c004121ae66 1-10
+plugins/diagram/local.guanwenbo.archify/skills/archify.md
+  h_b98c004121ae66 1-35
+plugins/diagram/local.guanwenbo.excalidraw-studio/README.md
+  h_b98c004121ae66 28-38,56-59
+plugins/diagram/local.guanwenbo.excalidraw-studio/manifest.json
+  h_b98c004121ae66 5-6,17,39,44
+plugins/diagram/local.guanwenbo.excalidraw-studio/renderer/app.css
+  h_b98c004121ae66 1
+plugins/diagram/local.guanwenbo.excalidraw-studio/renderer/app.js
+  h_b98c004121ae66 1,5-6,8,14-15,18-19,22,27-29,31-32,35-38,40-44,46,53,55,57,64,66-67,69-70,81,84,87-88,90,92-94,96,98,101,103,105,108,112-113,115,118-119,122-124,126,129,133,135,138,141,143,146,150-151,153,156,158,160,163,165,168,170-171,173,176,180,182,185,189,191-195,199-200,203-204,206-207,209,212,216-217,219,222,224,226,228,232-233,236,241,243,246,250-251,254,257-259,261,264,267,270,272,277,279,282,285-286,288,291-293,295,297,301-302,305,309,312,315,317-318,320,323,326-328,331,334,336,339,343-344,346,349,353-354,357-359,362-364,367,370-371,373,376,380-382,384,387-388,391-393,396-397,400,403-404,406,409,411-412,414,419-423,425-429,440,450,459,469,476,480,526,529,578,651,679-681,683-687,808-810,812-815,833-835,849-851,858,867-869,874,876-879,881-884,902,916,936,942,945,948,951,953,957-960,966-967,970,982,985-991,995,1000,1007,1027,1092-1093,1108,1123,1217-1220,1249-1250,1263,1265,1305,1310-1311,1315,1342,1356,1360,1364-1366,1369-1370,1451,1522-1523,1530,1535,1546-1547,1563,1567,1570,1612,1628,1633,1636-1637,1640,1642,1644,1646,1648-1653,1657,1660,1662-1663,1667-1668,1671,1675,1677,1679-1681,1683-1685,1691,1697,1703,1705,1707,1709-1715,1717,1719-1724,1726,1728,1730-1731,1734-1736,1744,1751,1753,1762,1764,1768-1771,1773-1775,1781-1784,1786-1791,1793-1799,1802-1806,1808,1815,1820,1831,1841,1848,1858,1889,1898,1900,1902-1903,2189-2190,2227-2228,2230,2233-2234,2236,2239-2240,2242,2245,2256-2257,2323,2328,2332,2471,2477,2484,2486,2489,2688-2689,2694,2919-2921,2924,3056-3057,3059,3062,3109,3141,3156,3176,3178,3180-3182,3224,3231,3235,3270-3271,3273,3275-3276,3280-3281,3327,3331,3358-3359,3361,3364-3366,3398,3421,3434,3460-3461,3463,3466,3588-3592,3618,3649,3651-3657,3660-3661,3724,3728,3730,3732,3735,3757,3780-3781,3799,3857,3918-3919,4004-4005,4007-4010,4012-4019,4037,4041,4045,4049,4056,4059-4060,4062,4064-4065,4070-4072,4163,4165-4169
+plugins/diagram/local.guanwenbo.excalidraw-studio/src/archify-import.js
+  h_b98c004121ae66 1-233
+plugins/diagram/local.guanwenbo.excalidraw-studio/src/panel.jsx
+  h_b98c004121ae66 4,7-11,24,51-52,60,72-96,99-100,197-236,276,293-337,352-353,358-368,387-388
+plugins/diagram/local.guanwenbo.excalidraw-studio/src/styles.css
+  h_b98c004121ae66 44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "eae428ef6ab63c51ec779a0fc23061979a792862",
+  "prompts": {},
+  "humans": {
+    "h_b98c004121ae66": {
+      "author": "gwbgwb <guanwenbo@jd.com>"
+    }
+  }
+}
