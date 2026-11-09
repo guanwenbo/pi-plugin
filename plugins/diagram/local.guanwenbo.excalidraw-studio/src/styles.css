@@ -41,7 +41,7 @@ body {
 
 .toolbar {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px;
   padding: 6px 10px;

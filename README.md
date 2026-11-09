@@ -100,6 +100,8 @@ installer 会直接拒的：
 
 - 三套模板：`node scripts/check.mjs` 全绿；宿主内置 `PluginCheck` 也通过（工具/技能模板各带一条「high-risk 权限需用户授权」的提示，属预期）。
 - `scripts/pack.mjs` 对 `templates/panel` 的产物与宿主内置 `PluginPack` 的输出**字节完全一致**（sha256 `fe9224248b6f7bfa481341f7b5b05128baa60d49a9913c50a8a8f08cc3c891f5`），`unzip -t` 与 Python `zipfile` 均通过。
+- `local.guanwenbo.archify`：`runtime/bin/archify.mjs doctor` 全绿；四个工具用桩 `pi` 在本地实跑过——`finalize` 四道门禁全 pass（851280 字节 / 3.6s）、越界输出被拦、坏候选返回结构化 `diagnostics`。
+- `local.guanwenbo.excalidraw-studio` 0.2.0：四种模板与 Archify 导入在浏览器里逐张截图确认；导入用 `production-deployment.architecture.json` 实测（36 个元素：16 矩形 / 8 文本 / 12 箭头）。
 - 未验证的部分：`.piplug` 在 Plugins 页的实际安装点击流程（需要人工点一下）。
 
 ## 我的插件清单
@@ -108,7 +110,8 @@ installer 会直接拒的：
 
 | 分类 | 插件 | id | 版本 |
 | --- | --- | --- | --- |
-| `diagram/` | [Excalidraw 架构与建模画布](./plugins/diagram/local.guanwenbo.excalidraw-studio) | `local.guanwenbo.excalidraw-studio` | 0.1.0 |
+| `diagram/` | [Excalidraw 架构与建模画布](./plugins/diagram/local.guanwenbo.excalidraw-studio) | `local.guanwenbo.excalidraw-studio` | 0.2.0 |
+| `diagram/` | [Archify 校验式图表](./plugins/diagram/local.guanwenbo.archify) | `local.guanwenbo.archify` | 0.1.0 |
 
 可用的分类：`agent/` `dev/` `writing/` `productivity/` `data/` `diagram/` `system/` `misc/`，各自的边界写在对应目录的 `README.md` 里。
 

@@ -25,6 +25,17 @@ diagrams/<场景名>.excalidraw   Excalidraw 原生场景（明文 JSON，可用
 diagrams/<场景名>.svg          导出的矢量图
 ```
 
+## 与 Archify 联动（0.2.0 起）
+
+配合 [`../local.guanwenbo.archify`](../local.guanwenbo.archify) 插件，两条链路都收在这一个面板里：
+
+1. **导入架构 JSON**：下拉列出 `diagrams/**/*.architecture.json`，选中导入后，Archify 的组件 / 边界 / 连线 / 说明卡片会变成**普通画布元素**，随便拖改。
+   - 只支持 `architecture`——它的 IR 带真实像素坐标（`pos` / `size`）；`workflow` / `sequence` / `erd` 用的是网格坐标，要复刻 Archify 的布局常量才准，所以宁可不导，也不给一张错位的图。
+   - 映射规则：组件→圆角矩形（按 `type` 配色）、`boundaries[].wraps`→包住成员的虚线框、`connections[]`→带文字的箭头（显式几何 + 绑定）、`cards[]`→右侧文字块。
+2. **打开成品**：下拉列出 `diagrams/**/*.html`，点「打开成品」用宿主内置浏览器打开 Archify 那份自包含 HTML。
+
+所以完整闭环是：**agent 用 Archify 出一版经过门禁的图 → 你在面板里看 HTML → 需要改就导入画布手调 → 存回 `.excalidraw`／导出 SVG**。
+
 ## 权限与安全
 
 - `ui.panel`：面板本身
@@ -42,9 +53,10 @@ diagrams/<场景名>.svg          导出的矢量图
 源码在 `src/`，构建产物在 `renderer/`（**已提交**，安装插件不需要构建）：
 
 ```
-src/panel.jsx      面板：工具栏 + 挂载 Excalidraw
-src/templates.js   四种图的骨架生成器
-src/styles.css     工具栏样式
+src/panel.jsx         面板：工具栏 + 挂载 Excalidraw
+src/templates.js      四种图的骨架生成器
+src/archify-import.js Archify architecture IR → Excalidraw 骨架（纯函数，可用 node 单测）
+src/styles.css        工具栏样式
 build.mjs          esbuild 打包 + 拷 Excalidraw 样式与字体
 renderer/          app.js（约 8MB，含 React + Excalidraw）、app.css、excalidraw.css、fonts/
 ```

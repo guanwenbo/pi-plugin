@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "id": "local.guanwenbo.archify",
+  "name": "Archify 校验式图表",
+  "version": "0.1.0",
+  "description": "把 Archify（Apache-2.0）的图表引擎装进 PI-Desktop：agent 写 Typed JSON IR，内置 CLI 跑 validate / deliver / 浏览器门禁，产出可分享的单个 HTML（架构、流程、时序、数据流、状态、ERD、类图、树、时间线、瀑布，共 10 类 + 一页式解释）。与 Excalidraw 画布共用 diagrams/ 目录。",
+  "main": "main.js",
+  "contributes": {
+    "agentTools": [
+      {
+        "name": "archify_types",
+        "description": "List Archify's diagram types with when-to-use guidance, plus the absolute paths of the bundled SKILL/references/examples/schemas runtime. Call this first when the user wants an architecture, workflow, sequence, dataflow, lifecycle/state, ERD, class, tree, timeline or waterfall diagram, or a one-page explainer — Archify renders validated standalone HTML, unlike a hand-drawn canvas.",
+        "risk": "low",
+        "planSafeActions": ["list"],
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "action": { "type": "string", "enum": ["list"], "description": "Fixed action name." }
+          },
+          "required": ["action"]
+        }
+      },
+      {
+        "name": "archify_examples",
+        "description": "List the JSON-IR example files shipped with Archify (optionally for one diagram type) so you can read their exact shape before writing a candidate. Returns absolute paths.",
+        "risk": "low",
+        "planSafeActions": ["list"],
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "action": { "type": "string", "enum": ["list"], "description": "Fixed action name." },
+            "type": {
+              "type": "string",
+              "description": "Optional diagram type filter, e.g. architecture."
+            }
+          },
+          "required": ["action"]
+        }
+      },
+      {
+        "name": "archify_validate",
+        "description": "Validate an Archify candidate JSON against its schema and layout rules without producing output. Returns machine-readable diagnostics with `subject` and `supportedFixes` — fix only those objects, never rewrite the whole diagram.",
+        "risk": "low",
+        "planSafeActions": ["validate"],
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "action": { "type": "string", "enum": ["validate"], "description": "Fixed action name." },
+            "type": {
+              "type": "string",
+              "enum": ["architecture", "workflow", "sequence", "dataflow", "lifecycle", "erd", "tree", "class", "timeline", "waterfall", "explainer"],
+              "description": "Diagram type of the candidate."
+            },
+            "candidate": { "type": "string", "description": "Candidate JSON path, relative to the workspace root." }
+          },
+          "required": ["action", "type", "candidate"]
+        }
+      },
+      {
+        "name": "archify_finalize",
+        "description": "Run the full Archify delivery gate (validate → deliver → strict check → real-browser check) and atomically write the standalone HTML. A passing result is the only proof the artifact is good; on failure read `diagnostics` and repair the named objects only (bounded to two focused rounds).",
+        "risk": "medium",
+        "planSafeActions": ["validate"],
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "action": { "type": "string", "enum": ["finalize"], "description": "Fixed action name." },
+            "type": {
+              "type": "string",
+              "enum": ["architecture", "workflow", "sequence", "dataflow", "lifecycle", "erd", "tree", "class", "timeline", "waterfall", "explainer"],
+              "description": "Diagram type of the candidate."
+            },
+            "candidate": { "type": "string", "description": "Candidate JSON path, relative to the workspace root." },
+            "output": { "type": "string", "description": "Output HTML path, relative to the workspace root (put it under diagrams/)." },
+            "quality": {
+              "type": "string",
+              "enum": ["showcase", "standard"],
+              "description": "Layout quality bar. Default showcase; use standard for dense schemas."
+            }
+          },
+          "required": ["action", "type", "candidate", "output"]
+        }
+      }
+    ],
+    "skills": ["skills/archify.md"]
+  },
+  "permissions": ["agent.tool.register", "agent.prompt.inject"],
+  "engines": { "piDesktop": ">=0.15.0" },
+  "activationEvents": ["onStartup"],
+  "i18n": {
+    "en": {
+      "name": "Archify Validated Diagrams",
+      "description": "Bundles the Apache-2.0 Archify engine: the agent authors Typed JSON IR, a zero-dependency CLI runs schema, layout, HTML and real-browser gates, and the result is one standalone interactive HTML (architecture, workflow, sequence, dataflow, lifecycle, ERD, class, tree, timeline, waterfall, plus one-page explainers). Shares diagrams/ with the Excalidraw canvas.",
+      "safetyNotes": "The bundled CLI runs as a local Node child process against the open workspace. It writes only the output path you pass, and the plugin refuses any output outside diagrams/. It uploads nothing; its update check is a bounded version lookup that never blocks delivery. Archify is Apache-2.0, vendored unmodified under runtime/ with its LICENSE and NOTICE."
+    },
+    "zh-CN": {
+      "name": "Archify 校验式图表",
+      "description": "内置 Apache-2.0 的 Archify 引擎：agent 写 Typed JSON IR，零依赖 CLI 跑 Schema、布局、HTML 与真实浏览器四道门禁，产出单个可交互 HTML（架构 / 流程 / 时序 / 数据流 / 状态 / ERD / 类图 / 树 / 时间线 / 瀑布，以及一页式解释）。与 Excalidraw 画布共用 diagrams/ 目录。",
+      "safetyNotes": "内置 CLI 以本机 Node 子进程运行、作用于当前工作区。它只写你传入的那个输出路径，且插件会拒绝 diagrams/ 之外的输出。它不上传任何内容；其中的版本检查只是一次有界的版本查询，失败也不影响交付。Archify 为 Apache-2.0，runtime/ 下为未修改的原始分发，附 LICENSE 与 NOTICE。"
+    }
+  }
+}

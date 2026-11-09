@@ -1,10 +1,14 @@
 /**
  * Excalidraw 画布面板。
  *
- * 结构：工具栏（模板 / 存取 / 导出） + Excalidraw 画布。
+ * 结构：工具栏（模板 / 场景存取 / Archify 联动） + Excalidraw 画布。
  * 宿主能力只走 window.pluginBridge 的白名单通道，参数形态与宿主实现一致：
  *   fs.writeText { path, content }   fs.readText { path }   fs.glob { pattern }
- *   fs.list { path }                 ui.showToast { message }
+ *   fs.openInBrowser { path }        ui.showToast { message }
+ *
+ * Archify 联动（与 local.guanwenbo.archify 插件配合）：
+ *   - 打开成品：列出 diagrams/ 下的 .html，交给宿主内置浏览器打开
+ *   - 导入架构 JSON：读 Archify 的 architecture 候选 JSON，转成画布元素继续手改
  */
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -16,9 +20,8 @@ import {
   exportToSvg,
   serializeAsJSON,
 } from "@excalidraw/excalidraw";
-// Excalidraw 的样式在构建时由 build.mjs 拷成 renderer/excalidraw.css
-// （包的 exports 只把 ./index.css 映射到 production 条件，esbuild 解析不到）。
 import { DIAGRAM_TYPES, GENERATORS } from "./templates.js";
+import { architectureToSkeleton, describeArchitecture } from "./archify-import.js";
 import "./styles.css";
 
 const DIR = "diagrams";
@@ -45,8 +48,8 @@ function baseName(entry) {
   return "";
 }
 
-/** 从 fs.glob / fs.list 的各种返回形态里捞出 .excalidraw 文件名。 */
-function collectSceneFiles(result) {
+/** 从 fs.glob 的各种返回形态里捞出文件名。 */
+function collectFiles(result, predicate) {
   const list = Array.isArray(result)
     ? result
     : Array.isArray(result?.entries)
@@ -54,7 +57,7 @@ function collectSceneFiles(result) {
       : Array.isArray(result?.files)
         ? result.files
         : [];
-  return [...new Set(list.map(baseName).filter((name) => name.endsWith(".excalidraw")))].sort();
+  return [...new Set(list.map(baseName).filter(predicate))].sort();
 }
 
 function boundsOf(elements) {
@@ -66,9 +69,35 @@ function boundsOf(elements) {
   return maxY;
 }
 
-function Toolbar({ api, sceneName, setSceneName, status, setStatus, files, refreshFiles }) {
+/** 多次 glob 合并：不同宿主版本对 `**` 的支持不一样，两种模式都试一遍。 */
+async function globMany(patterns, predicate) {
+  const results = new Set();
+  for (const pattern of patterns) {
+    try {
+      const result = await bridgeInvoke("fs.glob", { pattern });
+      for (const name of collectFiles(result, predicate)) results.add(name);
+    } catch {
+      // 单个模式失败不算错误
+    }
+  }
+  return [...results].sort();
+}
+
+function Toolbar({
+  api,
+  sceneName,
+  setSceneName,
+  status,
+  setStatus,
+  files,
+  refreshFiles,
+  candidates,
+  artifacts,
+}) {
   const [busy, setBusy] = useState(false);
   const [selected, setSelected] = useState("");
+  const [selectedCandidate, setSelectedCandidate] = useState("");
+  const [selectedArtifact, setSelectedArtifact] = useState("");
 
   const withBusy = useCallback(
     async (label, task) => {
@@ -165,6 +194,46 @@ function Toolbar({ api, sceneName, setSceneName, status, setStatus, files, refre
     setStatus("画布已清空");
   }, [api, setStatus]);
 
+  /** 把 Archify 的 architecture 候选 JSON 转成画布元素。 */
+  const importArchify = useCallback(
+    () =>
+      withBusy("导入架构 JSON", async () => {
+        const target = selectedCandidate;
+        if (!target) throw new Error("先选一个 .architecture.json");
+        const content = await bridgeInvoke("fs.readText", { path: `${DIR}/${target}` });
+        const doc = JSON.parse(content);
+        const info = describeArchitecture(doc);
+        if (!info.supported) {
+          throw new Error(`只支持 architecture，当前是 ${info.diagramType}`);
+        }
+        const skeleton = architectureToSkeleton(doc);
+        const existing = api.getSceneElements();
+        const offsetY = existing.length ? boundsOf(existing) + 120 : 0;
+        const shifted = skeleton.map((element) => ({ ...element, y: element.y + offsetY }));
+        const created = convertToExcalidrawElements(shifted, { regenerateIds: true });
+        api.updateScene({
+          elements: [...existing, ...created],
+          captureUpdate: CaptureUpdateAction.IMMEDIATELY,
+        });
+        api.scrollToContent(created, { fitToContent: true, animate: true });
+        setStatus(
+          `已导入 Archify 架构「${info.title ?? target}」：${info.components} 组件 / ${info.connections} 连线 / ${info.boundaries} 边界`,
+        );
+      }),
+    [api, selectedCandidate, withBusy, setStatus],
+  );
+
+  /** 用宿主内置浏览器打开 Archify 生成的自包含 HTML。 */
+  const openArtifact = useCallback(
+    () =>
+      withBusy("打开成品", async () => {
+        if (!selectedArtifact) throw new Error("先选一个 .html");
+        await bridgeInvoke("fs.openInBrowser", { path: `${DIR}/${selectedArtifact}` });
+        setStatus(`已在浏览器打开 ${DIR}/${selectedArtifact}`);
+      }),
+    [selectedArtifact, withBusy, setStatus],
+  );
+
   const disabled = busy || !api;
 
   return (
@@ -204,7 +273,7 @@ function Toolbar({ api, sceneName, setSceneName, status, setStatus, files, refre
         onChange={(event) => setSelected(event.target.value)}
         title={files.length ? "选择要打开的 .excalidraw" : "diagrams/ 下还没有场景文件"}
       >
-        <option value="">{files.length ? `选择场景（${files.length}）` : "暂无场景文件"}</option>
+        <option value="">{files.length ? `场景（${files.length}）` : "暂无场景"}</option>
         {files.map((file) => (
           <option key={file} value={file}>
             {file}
@@ -221,6 +290,51 @@ function Toolbar({ api, sceneName, setSceneName, status, setStatus, files, refre
         清空
       </button>
 
+      <span className="divider" />
+      <span className="group-label" title="由 local.guanwenbo.archify 插件生成">
+        Archify
+      </span>
+
+      <select
+        className="files"
+        value={selectedCandidate}
+        disabled={disabled || !candidates.length}
+        onChange={(event) => setSelectedCandidate(event.target.value)}
+        title={
+          candidates.length
+            ? "选择 Archify 的 architecture 候选 JSON"
+            : "diagrams/ 下还没有 *.architecture.json"
+        }
+      >
+        <option value="">{candidates.length ? `候选 JSON（${candidates.length}）` : "暂无候选"}</option>
+        {candidates.map((file) => (
+          <option key={file} value={file}>
+            {file}
+          </option>
+        ))}
+      </select>
+      <button type="button" disabled={disabled || !selectedCandidate} onClick={importArchify}>
+        导入架构 JSON
+      </button>
+
+      <select
+        className="files"
+        value={selectedArtifact}
+        disabled={!artifacts.length || busy}
+        onChange={(event) => setSelectedArtifact(event.target.value)}
+        title={artifacts.length ? "选择 Archify 生成的 HTML 成品" : "diagrams/ 下还没有 .html 成品"}
+      >
+        <option value="">{artifacts.length ? `HTML 成品（${artifacts.length}）` : "暂无成品"}</option>
+        {artifacts.map((file) => (
+          <option key={file} value={file}>
+            {file}
+          </option>
+        ))}
+      </select>
+      <button type="button" disabled={!selectedArtifact || busy} onClick={openArtifact}>
+        打开成品
+      </button>
+
       <span className="status" role="status">
         {status}
       </span>
@@ -235,16 +349,23 @@ function App() {
     hasBridge() ? "选择模板开始，或直接手绘；保存写到 diagrams/" : "预览模式：没有 pluginBridge，存取不可用",
   );
   const [files, setFiles] = useState([]);
+  const [candidates, setCandidates] = useState([]);
+  const [artifacts, setArtifacts] = useState([]);
   const bootstrapped = useRef(false);
 
   const refreshFiles = useCallback(async () => {
     if (!hasBridge()) return;
-    try {
-      const result = await bridgeInvoke("fs.glob", { pattern: `${DIR}/*.excalidraw` });
-      setFiles(collectSceneFiles(result));
-    } catch {
-      // glob 失败（目录还不存在 / 宿主差异）不算错误，保持旧列表即可。
-    }
+    const [scenes, archifyCandidates, archifyArtifacts] = await Promise.all([
+      globMany([`${DIR}/*.excalidraw`, `${DIR}/**/*.excalidraw`], (name) => name.endsWith(".excalidraw")),
+      globMany(
+        [`${DIR}/*.architecture.json`, `${DIR}/**/*.architecture.json`],
+        (name) => name.endsWith(".architecture.json"),
+      ),
+      globMany([`${DIR}/*.html`, `${DIR}/**/*.html`], (name) => name.endsWith(".html")),
+    ]);
+    setFiles(scenes);
+    setCandidates(archifyCandidates);
+    setArtifacts(archifyArtifacts);
   }, []);
 
   useEffect(() => {
@@ -263,6 +384,8 @@ function App() {
         setStatus={setStatus}
         files={files}
         refreshFiles={refreshFiles}
+        candidates={candidates}
+        artifacts={artifacts}
       />
       <div className="canvas-wrap">
         <Excalidraw
