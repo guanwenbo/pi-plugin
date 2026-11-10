@@ -66,8 +66,8 @@ node scripts/pack.mjs plugins/writing/local.guanwenbo.my-panel
 
 ```bash
 # 某个插件发了新版本：升 manifest 版本 → 提交 → 打 tag → 推
-git tag -a archify-v0.1.0 -m "archify 0.1.0：一句话说明这次交付了什么"
-git push origin archify-v0.1.0
+git tag -a archify-v1.0.0 -m "archify 1.0.0：一句话说明这次交付了什么"
+git push origin archify-v1.0.0
 ```
 
 - 短名取 `id` 的最后一段（`local.guanwenbo.excalidraw-studio` → `excalidraw-studio`），去掉 `local.<作者>.` 前缀，避免 tag 太长
@@ -162,8 +162,8 @@ installer 会直接拒的：
 
 | 分类 | 插件 | id | 版本 |
 | --- | --- | --- | --- |
-| `diagram/` | [Excalidraw 架构与建模画布](./plugins/diagram/local.guanwenbo.excalidraw-studio) | `local.guanwenbo.excalidraw-studio` | 0.3.1 |
-| `diagram/` | [Archify 校验式图表](./plugins/diagram/local.guanwenbo.archify) | `local.guanwenbo.archify` | 0.2.0 |
+| `diagram/` | [Excalidraw 架构与建模画布](./plugins/diagram/local.guanwenbo.excalidraw-studio) | `local.guanwenbo.excalidraw-studio` | 1.0.0 |
+| `diagram/` | [Archify 校验式图表](./plugins/diagram/local.guanwenbo.archify) | `local.guanwenbo.archify` | 1.0.0 |
 
 可用的分类：`agent/` `dev/` `writing/` `productivity/` `data/` `diagram/` `system/` `misc/`，各自的边界写在对应目录的 `README.md` 里。
 

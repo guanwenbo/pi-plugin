@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-10T01:47:09.279Z",
+  "generatedAt": "2026-11-10T01:50:28.740Z",
   "plugins": {
     "local.guanwenbo.archify": {
-      "version": "0.2.0",
-      "url": "https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/releases/local.guanwenbo.archify-0.2.0.piplug",
-      "sha256": "8a6ab4428474f1429d65b23584845cf443bada0d27b5b260a46c3ed7a6c98485",
+      "version": "1.0.0",
+      "url": "https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/releases/local.guanwenbo.archify-1.0.0.piplug",
+      "sha256": "b5437f1316a13fd34e93e80ad270333bd93ba767ae5ef90f752f48c201b08752",
       "size": 5436069,
-      "notes": "修复：根 package.json（type=module）被打进包里，导致 main.js 按 ESM 解析、启动报 require is not defined"
+      "notes": "1.0.0 正式版：命令面板命令 + 内置自更新（latest.json + releases/*.piplug）"
     },
     "local.guanwenbo.excalidraw-studio": {
-      "version": "0.3.1",
-      "url": "https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/releases/local.guanwenbo.excalidraw-studio-0.3.1.piplug",
-      "sha256": "7f60c369dc43ba024ddbc9cbfc3723c81b77681da1e048fe4a6788c5144c3e58",
+      "version": "1.0.0",
+      "url": "https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/releases/local.guanwenbo.excalidraw-studio-1.0.0.piplug",
+      "sha256": "38995a7916d948eae138601b890824a3201c34b3eee8409b7c8f7cf52182bfaa",
       "size": 9075866,
-      "notes": "修复：根 package.json（type=module）被打进包里，导致 main.js 按 ESM 解析、启动报 require is not defined"
+      "notes": "1.0.0 正式版：命令面板命令 + 内置自更新（latest.json + releases/*.piplug）"
     }
   }
 }

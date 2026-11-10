@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "local.guanwenbo.excalidraw-studio",
   "name": "Excalidraw 架构与建模画布",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "description": "在工作面板里用 Excalidraw 画技术架构图、业务建模图、流程图、时序图：四种图一键生成初稿，再手工拖改；场景可存成 .excalidraw 文件回读，也能导出 SVG。与 Archify 插件联动：可把 Archify 的 architecture 候选 JSON 导入画布继续手改，也能直接打开 Archify 生成的 HTML 成品。带自更新命令。",
   "main": "main.js",
   "ui": {

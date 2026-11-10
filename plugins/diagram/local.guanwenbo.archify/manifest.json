@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "local.guanwenbo.archify",
   "name": "Archify 校验式图表",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "把 Archify（Apache-2.0）的图表引擎装进 PI-Desktop：agent 写 Typed JSON IR，内置 CLI 跑 validate / deliver / 浏览器门禁，产出可分享的单个 HTML（架构、流程、时序、数据流、状态、ERD、类图、树、时间线、瀑布，共 10 类 + 一页式解释）。带命令面板命令与自更新。与 Excalidraw 画布共用 diagrams/ 目录。",
   "main": "main.js",
   "contributes": {
