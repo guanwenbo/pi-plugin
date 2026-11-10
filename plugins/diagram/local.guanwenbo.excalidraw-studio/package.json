@@ -1,9 +1,8 @@
 {
   "name": "local-guanwenbo-excalidraw-studio",
-  "version": "0.1.0",
+  "version": "0.3.1",
   "private": true,
-  "description": "构建 Excalidraw 面板用的打包工程（产物在 renderer/，已提交，安装插件不需要构建）",
-  "type": "module",
+  "description": "构建 Excalidraw 面板用的打包工程（产物在 renderer/，已提交，安装插件不需要构建）。刻意不写 \"type\": \"module\"——本目录的 main.js/commands.js/updater.js 是 CJS，一旦带上该字段宿主会按 ESM 解析并以 require is not defined 启动失败；build.mjs 用 .mjs 后缀，不受影响。打包脚本也不会把根 package.json 放进 .piplug。",
   "scripts": {
     "build": "node build.mjs",
     "watch": "node build.mjs --watch"

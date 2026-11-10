@@ -35,6 +35,18 @@ export const LIMITS = {
 /** 打包时排除的目录与文件，和官方 packer 保持一致。 */
 export const SKIP_DIRS = new Set([".git", "node_modules", "dist"]);
 export const SKIP_FILES = new Set([".DS_Store", "Thumbs.db"]);
+/**
+ * 只排除「插件根目录」里的开发用文件，子目录里的同名文件要保留——
+ * vendor 进来的 runtime/package.json（如 archify 的 Archify 3.2.0）是 ESM 依赖的一部分，
+ * 全局排除会把它一起删掉。插件运行只认 manifest.json，根 package.json 从不加载。
+ */
+export const SKIP_ROOT_FILES = new Set([
+  "package.json",
+  "package-lock.json",
+  "npm-shrinkwrap.json",
+  "yarn.lock",
+  "pnpm-lock.yaml",
+]);
 
 /** 宿主认识的权限名。未知的只报警告，因为宿主版本可能更新。 */
 export const PERMISSION_RISK = {
@@ -86,6 +98,9 @@ export function collectFiles(dir, base = dir, acc = { files: [], symlinks: [] })
     }
     if (!entry.isFile()) continue;
     if (SKIP_FILES.has(entry.name)) continue;
+    // 插件根目录的开发用文件不进包：package.json 的 "type": "module" 会让宿主
+    // 按 ESM 解析 CJS 的 main.js（报 require is not defined），lock 文件纯属累赘。
+    if (dir === base && SKIP_ROOT_FILES.has(entry.name)) continue;
     if (entry.name.endsWith(".piplug")) continue;
     acc.files.push({ rel, abs, size: statSync(abs).size });
   }

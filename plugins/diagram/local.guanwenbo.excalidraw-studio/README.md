@@ -88,6 +88,7 @@ node build.mjs       # 重新生成 renderer/app.js 等
 - 它的 `exports` 只把 `./index.css` 映射到 `production` 条件，esbuild 解析不到，所以 `build.mjs` 直接把 `dist/prod/index.css` 拷成 `renderer/excalidraw.css`。
 - 箭头只给 `start`/`end` 绑定、不给 `points`，`convertToExcalidrawElements` 会生成**零长度箭头**（渲染成贴在方框里的小箭头）。所以 `templates.js` 里箭头一律「显式两点几何 + 绑定」都写。
 - 容器加 `label` 时 `fontFamily` 用 `2`（系统字体），中文才不会因为缺手写体字体文件而掉字。
+- **`package.json` 不能带 `"type": "module"`**（0.3.1 修）：`main.js` / `commands.js` / `updater.js` 是 CJS，宿主见到该字段会按 ESM 解析整个插件目录，启动即 `require is not defined in ES module scope`。构建脚本是 `build.mjs`，`.mjs` 后缀本身即 ESM，去掉该字段不影响 `node build.mjs`。
 
 ## 第三方资源
 

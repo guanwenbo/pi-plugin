@@ -115,6 +115,7 @@ installer 会直接拒的：
 - 打包 ≤ 2000 文件、≤ 50MB、**不含符号链接**
 - `fs.write` / `fs.delete` **不能声明整树**（`*`、`**`、`**/*`），写入删除必须有具体范围
 - `entry` 路径（`main`、`ui.panel`、`skills/*`…）必须存在且不能越出插件目录
+- **插件是 CJS**：`main.js` 里用 `require`，所以插件根目录不能有带 `"type": "module"` 的 `package.json` —— 宿主会按 ESM 解析，启动直接报 `require is not defined in ES module scope`。构建工程需要 `package.json` 时**别写该字段**（`build.mjs` 用 `.mjs` 后缀本来就不受影响）。`scripts/pack.mjs` 会自动跳过插件根的 `package*.json`，但宿主内置 PluginPack 会把它打进去，所以两边都要防。
 
 装上了但会静默失效的：
 
@@ -161,7 +162,7 @@ installer 会直接拒的：
 
 | 分类 | 插件 | id | 版本 |
 | --- | --- | --- | --- |
-| `diagram/` | [Excalidraw 架构与建模画布](./plugins/diagram/local.guanwenbo.excalidraw-studio) | `local.guanwenbo.excalidraw-studio` | 0.3.0 |
+| `diagram/` | [Excalidraw 架构与建模画布](./plugins/diagram/local.guanwenbo.excalidraw-studio) | `local.guanwenbo.excalidraw-studio` | 0.3.1 |
 | `diagram/` | [Archify 校验式图表](./plugins/diagram/local.guanwenbo.archify) | `local.guanwenbo.archify` | 0.2.0 |
 
 可用的分类：`agent/` `dev/` `writing/` `productivity/` `data/` `diagram/` `system/` `misc/`，各自的边界写在对应目录的 `README.md` 里。
