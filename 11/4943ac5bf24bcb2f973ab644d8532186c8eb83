@@ -1,0 +1,22 @@
+README.md
+  h_b98c004121ae66 69-70,165-166
+latest.json
+  h_b98c004121ae66 3,6-8,10,13-15,17
+plugins/README.md
+  h_b98c004121ae66 62
+plugins/diagram/local.guanwenbo.archify/manifest.json
+  h_b98c004121ae66 5
+plugins/diagram/local.guanwenbo.excalidraw-studio/manifest.json
+  h_b98c004121ae66 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "114943ac5bf24bcb2f973ab644d8532186c8eb83",
+  "prompts": {},
+  "humans": {
+    "h_b98c004121ae66": {
+      "author": "gwbgwb <guanwenbo@jd.com>"
+    }
+  }
+}
