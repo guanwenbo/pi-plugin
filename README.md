@@ -164,6 +164,7 @@ installer 会直接拒的：
 | --- | --- | --- | --- |
 | `diagram/` | [Excalidraw 架构与建模画布](./plugins/diagram/local.guanwenbo.excalidraw-studio) | `local.guanwenbo.excalidraw-studio` | 1.0.0 |
 | `diagram/` | [Archify 校验式图表](./plugins/diagram/local.guanwenbo.archify) | `local.guanwenbo.archify` | 1.0.0 |
+| `agent/` | [Ponytail 懒人资深工程师](./plugins/agent/local.guanwenbo.ponytail) | `local.guanwenbo.ponytail` | 1.0.0 |
 
 可用的分类：`agent/` `dev/` `writing/` `productivity/` `data/` `diagram/` `system/` `misc/`，各自的边界写在对应目录的 `README.md` 里。
 

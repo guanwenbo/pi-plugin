@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-10T01:50:28.740Z",
+  "generatedAt": "2026-11-18T16:42:01.306Z",
   "plugins": {
     "local.guanwenbo.archify": {
       "version": "1.0.0",
@@ -15,6 +15,13 @@
       "sha256": "38995a7916d948eae138601b890824a3201c34b3eee8409b7c8f7cf52182bfaa",
       "size": 9075866,
       "notes": "1.0.0 正式版：命令面板命令 + 内置自更新（latest.json + releases/*.piplug）"
+    },
+    "local.guanwenbo.ponytail": {
+      "version": "1.0.0",
+      "url": "https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/releases/local.guanwenbo.ponytail-1.0.0.piplug",
+      "sha256": "0cfa4e6b9ae4d90e7ba8bfdf2de61f9a281ae3fc1f629f15f306f5eef7da5906",
+      "size": 24873,
+      "notes": "1.0.0 首个正式版：迁自 DietrichGebert/ponytail v5.3.3（MIT），5 技能（核心规则/review/audit/debt/help），纯技能包仅注入提示词"
     }
   }
 }

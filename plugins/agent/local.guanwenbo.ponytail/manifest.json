@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "local.guanwenbo.ponytail",
+  "name": "Ponytail",
+  "version": "1.0.0",
+  "description": "Lazy senior dev mode for your coding agent: the smallest complete change, reuse before new code, reviews that read beyond the diff. Adapted from DietrichGebert/ponytail (MIT).",
+  "main": "main.cjs",
+  "author": "Dietrich Gebert (upstream); PI-Desktop adaptation by guanwenbo",
+  "contributes": {
+    "skills": [
+      "skills/ponytail.md",
+      "skills/ponytail-review.md",
+      "skills/ponytail-audit.md",
+      "skills/ponytail-debt.md",
+      "skills/ponytail-help.md"
+    ]
+  },
+  "permissions": [
+    "agent.prompt.inject"
+  ],
+  "scope": {
+    "mode": "global",
+    "projects": []
+  },
+  "engines": {
+    "piDesktop": ">=0.2.0"
+  },
+  "categories": ["developer-tools", "agent-skills"],
+  "activationEvents": [
+    "onStartup"
+  ],
+  "i18n": {
+    "en": {
+      "name": "Ponytail",
+      "description": "Lazy senior dev mode: the smallest complete change, reuse before new code, senior-dev style review and audit. Skills only; no tools, no network, no file writes.",
+      "safetyNotes": "Injects skill instructions into the agent prompt only. No filesystem, network, or key access. Changes how the agent writes code (smaller diffs, reuse first); disable on the plugins page to restore default behavior."
+    },
+    "zh-CN": {
+      "name": "Ponytail 懒人资深工程师",
+      "description": "让编码 Agent 像最老练的资深工程师一样只写必要的最少代码：先复用、再标准库/平台原生、最后最小实现；附 diff 评审、全仓审计、技术债台账。纯技能包，无工具、不联网、不写盘。",
+      "safetyNotes": "仅向 Agent 提示词注入技能说明，不访问文件系统、网络或密钥。会改变 Agent 写代码风格（更小改动、优先复用）；在插件页禁用即可恢复默认行为。"
+    }
+  },
+  "changelog": "1.0.0 — First official PI-Desktop release. Migrated from DietrichGebert/ponytail v5.3.3 (MIT): core lazy-senior-dev ruleset, ponytail-review, ponytail-audit, ponytail-debt, and a Desktop-adapted help card. Claude Code-only band/board/hooks and the gain scoreboard are not included.",
+  "safetyNotes": "Prompt-injection only (agent.prompt.inject). No fs/net/secret permissions. Upstream rules never cut validation, error handling, security, or accessibility."
+}
