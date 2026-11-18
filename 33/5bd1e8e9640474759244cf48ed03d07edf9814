@@ -1,0 +1,32 @@
+README.md
+  h_b98c004121ae66 167
+latest.json
+  h_b98c004121ae66 3,18-24
+plugins/agent/local.guanwenbo.ponytail/README.md
+  h_b98c004121ae66 1-42
+plugins/agent/local.guanwenbo.ponytail/main.cjs
+  h_b98c004121ae66 1-16
+plugins/agent/local.guanwenbo.ponytail/manifest.json
+  h_b98c004121ae66 1-46
+plugins/agent/local.guanwenbo.ponytail/skills/ponytail-audit.md
+  h_b98c004121ae66 1-103
+plugins/agent/local.guanwenbo.ponytail/skills/ponytail-debt.md
+  h_b98c004121ae66 1-45
+plugins/agent/local.guanwenbo.ponytail/skills/ponytail-help.md
+  h_b98c004121ae66 1-47
+plugins/agent/local.guanwenbo.ponytail/skills/ponytail-review.md
+  h_b98c004121ae66 1-101
+plugins/agent/local.guanwenbo.ponytail/skills/ponytail.md
+  h_b98c004121ae66 1-47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "335bd1e8e9640474759244cf48ed03d07edf9814",
+  "prompts": {},
+  "humans": {
+    "h_b98c004121ae66": {
+      "author": "gwbgwb <guanwenbo@jd.com>"
+    }
+  }
+}
