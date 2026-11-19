@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-18T16:42:01.306Z",
+  "generatedAt": "2026-11-19T09:27:52.222Z",
   "plugins": {
     "local.guanwenbo.archify": {
       "version": "1.0.0",
@@ -22,6 +22,13 @@
       "sha256": "0cfa4e6b9ae4d90e7ba8bfdf2de61f9a281ae3fc1f629f15f306f5eef7da5906",
       "size": 24873,
       "notes": "1.0.0 首个正式版：迁自 DietrichGebert/ponytail v5.3.3（MIT），5 技能（核心规则/review/audit/debt/help），纯技能包仅注入提示词"
+    },
+    "local.guanwenbo.captcha-kit": {
+      "version": "0.1.0",
+      "url": "https://raw.githubusercontent.com/guanwenbo/pi-plugin/main/releases/local.guanwenbo.captcha-kit-0.1.0.piplug",
+      "sha256": "774138f16ed46e2d34d1ab57cee19360dcfd6498d0a7ef12516d212cb1800e9a",
+      "size": 53790,
+      "notes": "首版：字符/滑块/点选识别 + 浏览器 CDP 与 macOS 桌面双操作通道"
     }
   }
 }

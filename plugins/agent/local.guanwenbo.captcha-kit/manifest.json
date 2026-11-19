@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "id": "local.guanwenbo.captcha-kit",
+  "name": "Captcha Kit 验证码助手",
+  "version": "0.1.0",
+  "description": "识别并操作验证码：字符 OCR / 滑块缺口（本地 ddddocr）+ 点选类（视觉模型看图给坐标），操作层覆盖工作面板浏览器（CDP 截图表/拖拽/点击/填写）与 macOS 桌面（screencapture + Quartz 键鼠）。仅限自有或已授权环境。",
+  "main": "main.cjs",
+  "author": "guanwenbo",
+  "contributes": {
+    "agentTools": [
+      {
+        "name": "captcha_env",
+        "description": "Check or install the local captcha recognition runtime (private Python venv with ddddocr). action=check|setup; setup runs pip in background, poll check until ready.",
+        "risk": "high",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": { "type": "string", "enum": ["check", "setup"] },
+            "index": { "type": "string", "description": "Optional pip index URL for setup." }
+          },
+          "required": ["action"]
+        }
+      },
+      {
+        "name": "captcha_recognize",
+        "description": "Recognize a captcha image: type=text (ddddocr OCR), type=slide (match/comparison gap detection), type=click (attaches original + coordinate-grid images for the vision model to output ordered click points).",
+        "risk": "medium",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "enum": ["text", "slide", "click"] },
+            "path": { "type": "string", "description": "Captcha image file path." },
+            "mode": { "type": "string", "enum": ["match", "comparison"] },
+            "target": { "type": "string", "description": "Slider piece image (slide match)." },
+            "background": { "type": "string", "description": "Full background without gap (slide comparison)." },
+            "prompt": { "type": "string", "description": "Click-task instruction (type=click)." },
+            "step": { "type": "number", "description": "Grid step px (default 50)." }
+          },
+          "required": ["type", "path"]
+        }
+      },
+      {
+        "name": "captcha_slide_track",
+        "description": "Generate a human-like slider drag trajectory (relative offsets with ease-out, overshoot and jitter).",
+        "risk": "low",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "distance": { "type": "number" },
+            "duration": { "type": "number", "description": "Total ms (300–4000, default 900)." }
+          },
+          "required": ["distance"]
+        }
+      },
+      {
+        "name": "captcha_browser",
+        "description": "Work-panel browser captcha operations via host CDP: capture (element image + coordinate mapping), drag (along track), click, fill. Coordinates are page CSS pixels.",
+        "risk": "high",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": { "type": "string", "enum": ["capture", "drag", "click", "fill"] },
+            "selector": { "type": "string" },
+            "savePath": { "type": "string" },
+            "x": { "type": "number" },
+            "y": { "type": "number" },
+            "track": { "type": "array", "items": { "type": "object" } },
+            "text": { "type": "string" }
+          },
+          "required": ["action"]
+        }
+      },
+      {
+        "name": "captcha_desktop",
+        "description": "macOS desktop captcha channel: screenshot (screencapture + pixel→point mapping), click / drag / type via Quartz. Windows desktop should use the computer-use plugin instead.",
+        "risk": "high",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": { "type": "string", "enum": ["screenshot", "click", "drag", "type"] },
+            "savePath": { "type": "string" },
+            "region": { "type": "object" },
+            "x": { "type": "number" },
+            "y": { "type": "number" },
+            "points": { "type": "array", "items": { "type": "object" } },
+            "text": { "type": "string" }
+          },
+          "required": ["action"]
+        }
+      }
+    ],
+    "skills": ["skills/captcha-kit.md"]
+  },
+  "permissions": ["agent.tool.register", "agent.prompt.inject", "browser.cdp"],
+  "scope": { "mode": "global", "projects": [] },
+  "engines": { "piDesktop": ">=0.15.0" },
+  "categories": ["agent-tools", "productivity"],
+  "activationEvents": ["onStartup"],
+  "i18n": {
+    "en": {
+      "name": "Captcha Kit",
+      "description": "Recognize and operate captchas on sites you own or are authorized to test: text OCR and slider-gap detection run locally via ddddocr; click-type captchas are answered by the session vision model using an attached coordinate grid. Operation covers the work-panel browser (CDP capture/drag/click/fill) and the macOS desktop (screencapture + Quartz input).",
+      "safetyNotes": "AUTHORIZED USE ONLY — the skill refuses third-party anti-bot bypass. setup spawns pip in a background process and downloads ddddocr/onnxruntime/pyobjc from a pip mirror (default Tsinghua TUNA, overridable) into ~/.pi-desktop/captcha-kit/venv; nothing is installed system-wide. High-risk tools can move the mouse, click, drag and type (macOS Quartz needs Accessibility permission; screencapture needs Screen Recording), and dispatch CDP input to the work-panel browser. Captcha images are processed locally and attached only to the current agent conversation; no upload to third parties. Retries are capped at 3 by the skill."
+    },
+    "zh-CN": {
+      "name": "Captcha Kit 验证码助手",
+      "description": "识别并操作验证码（仅限自有或已授权环境）：字符 OCR 与滑块缺口检测走本地 ddddocr；点选类回传原图+坐标网格由会话视觉模型给出点击顺序。操作层覆盖工作面板浏览器（CDP 截图/拖拽/点击/填写）与 macOS 桌面（screencapture + Quartz 键鼠）。",
+      "safetyNotes": "仅限授权用途——技能明确拒绝第三方站点反爬绕过。setup 会后台拉起 pip，从镜像源（默认清华 TUNA，可改）下载 ddddocr/onnxruntime/pyobjc 到 ~/.pi-desktop/captcha-kit/venv，不污染系统环境。高风险工具可移动鼠标、点击、拖拽、键入（macOS 需辅助功能与屏幕录制权限），并向工作面板浏览器派发 CDP 输入事件。验证码图片仅本地处理并附加到当前会话，不上传第三方。技能规定失败重试上限 3 次。"
+    }
+  },
+  "changelog": "0.1.0 — 首版：captcha_env（venv 自检/后台安装）、captcha_recognize（text/slide/click 三型）、captcha_slide_track（类人轨迹）、captcha_browser（CDP capture/drag/click/fill）、captcha_desktop（macOS screencapture+Quartz）；附双通道编排技能与授权前置。",
+  "safetyNotes": "仅限自有或已授权环境。后台 pip 安装私有 venv；高风险工具可控制键鼠（macOS Quartz）与浏览器 CDP 输入；图片仅本地处理并回传当前会话，不上传第三方；重试上限 3 次。"
+}
