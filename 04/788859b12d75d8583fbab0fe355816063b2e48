@@ -1,0 +1,36 @@
+README.md
+  h_b98c004121ae66 168
+latest.json
+  h_b98c004121ae66 3,25-31
+plugins/agent/local.guanwenbo.captcha-kit/README.md
+  h_b98c004121ae66 1-48
+plugins/agent/local.guanwenbo.captcha-kit/lib/browser.cjs
+  h_b98c004121ae66 1-148
+plugins/agent/local.guanwenbo.captcha-kit/lib/desktop.cjs
+  h_b98c004121ae66 1-94
+plugins/agent/local.guanwenbo.captcha-kit/lib/env.cjs
+  h_b98c004121ae66 1-113
+plugins/agent/local.guanwenbo.captcha-kit/lib/recognize.cjs
+  h_b98c004121ae66 1-98
+plugins/agent/local.guanwenbo.captcha-kit/lib/track.cjs
+  h_b98c004121ae66 1-44
+plugins/agent/local.guanwenbo.captcha-kit/main.cjs
+  h_b98c004121ae66 1-143
+plugins/agent/local.guanwenbo.captcha-kit/manifest.json
+  h_b98c004121ae66 1-113
+plugins/agent/local.guanwenbo.captcha-kit/scripts/captcha_worker.py
+  h_b98c004121ae66 1-229
+plugins/agent/local.guanwenbo.captcha-kit/skills/captcha-kit.md
+  h_b98c004121ae66 1-64
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "04788859b12d75d8583fbab0fe355816063b2e48",
+  "prompts": {},
+  "humans": {
+    "h_b98c004121ae66": {
+      "author": "gwbgwb <guanwenbo@jd.com>"
+    }
+  }
+}
